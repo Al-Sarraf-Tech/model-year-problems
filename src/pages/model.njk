@@ -1,0 +1,50 @@
+---js
+{
+  layout: "layouts/base.njk",
+  pagination: { data: "nhtsa.models", size: 1, alias: "hub" },
+  permalink: (data) => data.hub.url,
+  eleventyComputed: {
+    title: (data) => `${data.hub.name} problems by year: complaints and recalls ${data.hub.range}`,
+    description: (data) => {
+      const h = data.hub, w = h.rankable[0], b = h.rankable.at(-1);
+      return `${h.name} owner complaints and recalls for every model year ${h.range}, from NHTSA data. Most complaints: ${w.year} (${w.s.total.toLocaleString("en-US")}). Fewest: ${b.year} (${b.s.total.toLocaleString("en-US")}).`;
+    },
+    faqs: (data) => {
+      const h = data.hub, w = h.rankable[0], b = h.rankable.at(-1), fmt = (n) => n.toLocaleString("en-US");
+      const byRecalls = [...h.years].sort((x, y) => y.s.recalls.length - x.s.recalls.length)[0];
+      return [
+        { q: `What is the worst year for the ${h.name}?`, a: `By NHTSA owner complaints, ${w.year} (${fmt(w.s.total)} complaints; top component ${w.s.named[0]?.label.toLowerCase()}). That is a raw count, not adjusted for sales or age.` },
+        { q: `Which ${h.name} year has the fewest complaints?`, a: `${b.year}, with ${fmt(b.s.total)} complaints in NHTSA's data, among model years ${h.range}.` },
+        { q: `Which ${h.name} year has the most recalls?`, a: `${byRecalls.year}, with ${byRecalls.s.recalls.length} recall campaigns in NHTSA's recall database.` },
+      ];
+    },
+    crumbs: (data) => [{ name: "Home", url: "/" }, { name: data.hub.make, url: `/${data.hub.makeSlug}/` }, { name: data.hub.model }],
+  },
+}
+---
+{%- set w = hub.rankable[0] -%}{%- set b = hub.rankable | last -%}
+<p class="kicker"><a href="/{{ hub.makeSlug }}/">{{ hub.make }}</a></p>
+<h1>{{ hub.name }} problems by model year</h1>
+<p class="last-checked">NHTSA data checked {{ hub.checked | prettyDate }}</p>
+<section class="quick" aria-labelledby="sum">
+<h2 id="sum">Summary</h2>
+<p>Across model years {{ hub.range }}, NHTSA's public databases list {{ hub.totalComplaints | n }} owner complaints and {{ hub.totalRecalls }} distinct recall campaigns for the {{ hub.name }}.</p>
+<p>The year with the most complaints is <strong>{{ w.year }}</strong> ({{ w.s.total | n }}; owners name {{ w.s.named[0].label | lower }} most). The year with the fewest is <strong>{{ b.year }}</strong> ({{ b.s.total | n }}). The median year has {{ hub.medianComplaints | n }}.</p>
+<p>These are raw counts. They are not adjusted for how many of each year were sold, and older years have had longer to collect complaints.</p>
+</section>
+
+<h2 id="years">Every model year</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Model year</th><th class="num">Complaints</th><th class="num">Recalls</th><th class="num">Crash</th><th class="num">Fire</th><th>Most-named component</th></tr></thead>
+<tbody>
+{% for y in hub.years %}<tr{% if y.suspectGap %} class="flag"{% endif %}><td>{% if y.featured %}<a href="/{{ hub.makeSlug }}/{{ hub.modelSlug }}/{{ y.year }}/">{{ y.year }}</a>{% else %}{{ y.year }}{% endif %}{% if y.noRecords %} — no NHTSA records (likely not sold as this model year){% elif y.suspectGap %} — NHTSA's API count looks incomplete{% endif %}</td><td class="num">{{ y.s.total | n }}</td><td class="num">{{ y.s.recalls.length }}</td><td class="num">{{ y.s.crash | n }}</td><td class="num">{{ y.s.fire | n }}</td><td>{{ y.s.named[0].label if y.s.named.length else "—" }}{% if y.s.named.length %} <span class="muted">({{ y.s.named[0].share }}%)</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="muted">Linked years have a full page with every component and recall. Other years get pages over time; the counts above are already live.{% if hub.years | selectattr("suspectGap") | length %} Highlighted rows look like gaps in what NHTSA's API returns for that year, not a quiet year; they are left out of rankings.{% endif %}</p>
+
+{% include "partials/faq.njk" %}
+
+<section class="sources" aria-labelledby="src">
+<h2 id="src">Sources</h2>
+<p>Each count comes from NHTSA's Complaints API (complaintsByVehicle) and Recalls API (recallsByVehicle) for make {{ hub.years[0].rec.nhtsa_make }}, model {{ hub.years[0].rec.nhtsa_model }}, one request per model year, for example <a href="{{ w.rec.complaints_source_url }}" rel="nofollow noopener">{{ w.rec.complaints_source_url }}</a>. Checked {{ hub.checked }}. See <a href="/about/">method</a>.</p>
+</section>

@@ -1,0 +1,10 @@
+{
+  "name": "Model Year Problems",
+  "tagline": "Owner complaints and safety recalls by make, model and year",
+  "url": "https://modelyearproblems.com",
+  "description": "How many owner complaints and safety recalls NHTSA lists for each car model year, which components owners name most, and every recall campaign number. Counted from NHTSA's free public data, with the source URL and date checked on every page.",
+  "repo": "https://github.com/Al-Sarraf-Tech/model-year-problems",
+  "contact": "jalsarraf0@gmail.com",
+  "affiliates_enabled": false,
+  "cf_beacon_token": "4af83ee3482248bdbccb7842b3471e0b"
+}

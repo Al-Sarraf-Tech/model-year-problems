@@ -1,0 +1,38 @@
+---
+layout: layouts/base.njk
+---
+{%- set top = nhtsa.modelYears | sort(true, false, "s.total") -%}
+<section class="hero">
+<h1>Car problems by make, model and year, counted from NHTSA data</h1>
+<p class="lede">How many owner complaints and safety recalls the U.S. National Highway Traffic Safety Administration (NHTSA) lists for each model year, which parts owners complain about most, and every recall campaign number. No opinions, no star ratings: just NHTSA's public records, counted, with the source link and date on every page.</p>
+</section>
+<div id="search" class="search"></div>
+<noscript><p><a href="/makes/">Browse all makes</a></p></noscript>
+
+<h2>Most-complained-about model years on this site</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Model year</th><th class="num">Complaints</th><th class="num">Recalls</th><th>Most-named component</th></tr></thead>
+<tbody>
+{% for y in top | batch(12) | first %}<tr><td><a href="{{ y.url }}">{{ y.name }}</a></td><td class="num">{{ y.s.total | n }}</td><td class="num">{{ y.s.recalls.length }}</td><td>{{ y.s.named[0].label }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="muted">Raw counts from NHTSA, checked {{ nhtsa.checked | prettyDate }}. Popular cars collect more complaints simply because more were sold; compare years within one model first.</p>
+
+<h2>Models</h2>
+<div class="brands">
+{% for mk in nhtsa.makes %}<div class="brand-card"><h3><a href="{{ mk.url }}">{{ mk.make }}</a></h3>
+<p class="models-line">{% for m in mk.models %}<a href="{{ m.url }}">{{ m.model }}</a> <span class="muted">(worst: {{ m.rankable[0].year }})</span>{% if not loop.last %} · {% endif %}{% endfor %}</p></div>
+{% endfor %}
+</div>
+
+<section class="how">
+<h2>What the numbers are</h2>
+<ul>
+<li><strong>Complaints</strong> are reports owners file with NHTSA about a safety problem. NHTSA publishes them; it does not verify each one.</li>
+<li><strong>Recalls</strong> are campaigns where an automaker or NHTSA has found a safety defect; the fix is normally free at a dealer. Look up your own car by VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>.</li>
+<li>All counts come from NHTSA's free public APIs and are recounted when the data is refreshed. <a href="/about/">Full method</a>.</li>
+</ul>
+</section>
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+<script src="/pagefind/pagefind-ui.js" defer></script>
+<script src="/assets/search.js" defer></script>

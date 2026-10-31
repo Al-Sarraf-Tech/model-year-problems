@@ -1,0 +1,26 @@
+# Seed list. scripts/fetch-nhtsa.mjs fetches every make/model for every year in `years`.
+# NHTSA spells model names its own way; `nhtsa_model` is the exact value its API matches.
+years: [2010, 2020]
+# Model-year pages: the worst year of every model, then the next-worst years overall,
+# up to featured_count. extra_pages adds specific ones (make/model/year slugs).
+featured_count: 30
+extra_pages:
+  - honda/accord/2014
+models:
+  - { make: Honda, model: Accord, nhtsa_make: HONDA, nhtsa_model: ACCORD }
+  - { make: Honda, model: Civic, nhtsa_make: HONDA, nhtsa_model: CIVIC }
+  - { make: Honda, model: CR-V, nhtsa_make: HONDA, nhtsa_model: CR-V }
+  - { make: Toyota, model: Camry, nhtsa_make: TOYOTA, nhtsa_model: CAMRY }
+  - { make: Toyota, model: Corolla, nhtsa_make: TOYOTA, nhtsa_model: COROLLA }
+  - { make: Toyota, model: RAV4, nhtsa_make: TOYOTA, nhtsa_model: RAV4 }
+  - { make: Ford, model: Escape, nhtsa_make: FORD, nhtsa_model: ESCAPE }
+  - { make: Ford, model: Explorer, nhtsa_make: FORD, nhtsa_model: EXPLORER }
+  - { make: Ford, model: Focus, nhtsa_make: FORD, nhtsa_model: FOCUS }
+  - { make: Ford, model: Fusion, nhtsa_make: FORD, nhtsa_model: FUSION }
+  - { make: Chevrolet, model: Silverado 1500, nhtsa_make: CHEVROLET, nhtsa_model: SILVERADO 1500 }
+  - { make: Chevrolet, model: Equinox, nhtsa_make: CHEVROLET, nhtsa_model: EQUINOX }
+  - { make: Chevrolet, model: Malibu, nhtsa_make: CHEVROLET, nhtsa_model: MALIBU }
+  - { make: Chevrolet, model: Cruze, nhtsa_make: CHEVROLET, nhtsa_model: CRUZE }
+  - { make: Nissan, model: Altima, nhtsa_make: NISSAN, nhtsa_model: ALTIMA }
+  - { make: Nissan, model: Rogue, nhtsa_make: NISSAN, nhtsa_model: ROGUE }
+  - { make: Nissan, model: Sentra, nhtsa_make: NISSAN, nhtsa_model: SENTRA }

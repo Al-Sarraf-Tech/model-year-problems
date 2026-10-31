@@ -1,0 +1,108 @@
+---js
+{
+  layout: "layouts/base.njk",
+  ogType: "article",
+  pagination: { data: "nhtsa.modelYears", size: 1, alias: "my" },
+  permalink: (data) => data.my.url,
+  eleventyComputed: {
+    title: (data) => `${data.my.name} problems, complaints and recalls`,
+    description: (data) => data.my.description,
+    faqs: (data) => data.my.faqs,
+    crumbs: (data) => [
+      { name: "Home", url: "/" },
+      { name: data.my.m.make, url: `/${data.my.m.makeSlug}/` },
+      { name: data.my.m.model, url: data.my.m.url },
+      { name: String(data.my.year) },
+    ],
+  },
+}
+---
+{%- set s = my.s -%}
+<p class="kicker"><a href="{{ my.m.url }}">{{ my.m.make }} {{ my.m.model }}</a> · model year {{ my.year }}</p>
+<h1>{{ my.name }} problems, complaints and recalls</h1>
+<p class="last-checked">NHTSA data checked {{ my.rec.checked | prettyDate }} · counts are computed from NHTSA's public APIs, not estimated</p>
+
+<section class="quick" aria-labelledby="sum">
+<h2 id="sum">Summary</h2>
+{% for line in my.summary %}<p>{{ line }}</p>
+{% endfor %}
+</section>
+
+<div class="stats" role="list">
+  <div class="stat" role="listitem"><b>{{ s.total | n }}</b><span>owner complaints</span></div>
+  <div class="stat" role="listitem"><b>{{ s.recalls.length }}</b><span>recall campaigns</span></div>
+  <div class="stat" role="listitem"><b>{{ s.crash | n }}</b><span>complaints reporting a crash</span></div>
+  <div class="stat" role="listitem"><b>{{ s.fire | n }}</b><span>complaints reporting a fire</span></div>
+  <div class="stat" role="listitem"><b>{{ s.injuries | n }}</b><span>injuries reported</span></div>
+  <div class="stat" role="listitem"><b>{{ s.deaths | n }}</b><span>deaths reported</span></div>
+</div>
+
+{% if s.parkIt.length %}
+<div class="warn"><p><strong>Park-it warning.</strong> NHTSA marks {{ s.parkIt.length }} recall{% if s.parkIt.length > 1 %}s{% endif %} for this model year ({% for r in s.parkIt %}{{ r.campaign }}{% if not loop.last %}, {% endif %}{% endfor %}) with "park it" or "park outside" advice until the repair is done. Check your VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>.</p></div>
+{% endif %}
+
+<h2 id="components">Complaints by component</h2>
+<p class="muted">Owners pick one or more component groups when they file. Share is the percent of the {{ s.total | n }} complaints that name the group.</p>
+{%- set maxc = s.components | maxOf("count") -%}
+<div class="tablewrap"><table>
+<thead><tr><th>Component group (NHTSA label)</th><th class="num">Complaints</th><th class="num">Share</th></tr></thead>
+<tbody>
+{% for c in s.components %}<tr><td><strong>{{ c.label }}</strong>{% if c.note %}<span class="compnote">{{ c.note }}</span>{% endif %}<span class="bar" style="width:{{ c.count | barw(maxc) }}%"></span></td><td class="num">{{ c.count | n }}</td><td class="num">{{ c.share }}%</td></tr>
+{% endfor %}
+</tbody></table></div>
+
+<h2 id="recalls">Recalls ({{ s.recalls.length }})</h2>
+{% if s.recalls.length %}
+<p class="muted">Newest first. Summary, risk and remedy are NHTSA's own recall text (a U.S. government record), shown as published. A recall applies only to the vehicles its notice names; your VIN lookup is the final word.</p>
+{% for r in s.recalls %}
+<article class="recall" id="r-{{ r.campaign }}">
+<h3>NHTSA campaign {{ r.campaign }}{% if r.park_it %}<span class="tag">Park it</span>{% endif %}{% if r.park_outside %}<span class="tag">Park outside</span>{% endif %}</h3>
+<p class="muted">Received {{ r.received | prettyDate }} · {{ r.component | comp }}{% if r.component | subcomp %} ({{ r.component | subcomp }}){% endif %}{% if r.over_the_air %} · fix can be sent over the air{% endif %}</p>
+<p><strong>What's wrong:</strong> {{ r.summary }}</p>
+{% if r.consequence %}<p><strong>Risk:</strong> {{ r.consequence }}</p>{% endif %}
+{% if r.remedy %}<p><strong>Remedy:</strong> {{ r.remedy }}</p>{% endif %}
+</article>
+{% endfor %}
+{% else %}
+<p>NHTSA's recall database lists no recall campaigns for the {{ my.name }} as of {{ my.rec.checked | prettyDate }}.</p>
+{% endif %}
+
+<h2 id="timeline">When the complaints were filed</h2>
+<p class="muted">By the year the complaint reached NHTSA. A late rise often means a part wearing out with age or a problem drawing attention after a recall.</p>
+{%- set maxy = s.filedByYear | maxOf("count") -%}
+<div class="tablewrap"><table>
+<thead><tr><th>Year filed</th><th class="num">Complaints</th></tr></thead>
+<tbody>
+{% for y in s.filedByYear %}<tr><td>{{ y.year }}<span class="bar" style="width:{{ y.count | barw(maxy) }}%"></span></td><td class="num">{{ y.count | n }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+
+<h2 id="other-years">Other {{ my.m.model }} years</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Model year</th><th class="num">Complaints</th><th class="num">Recalls</th><th>Most-named component</th></tr></thead>
+<tbody>
+{% for y in my.m.years %}{% if not y.noRecords %}<tr{% if y.suspectGap %} class="flag"{% endif %}><td>{% if y.year == my.year %}<strong>{{ y.year }} (this page)</strong>{% elif y.featured %}<a href="/{{ my.m.makeSlug }}/{{ my.m.modelSlug }}/{{ y.year }}/">{{ y.year }}</a>{% else %}{{ y.year }}{% endif %}{% if y.suspectGap %} — NHTSA's API count looks incomplete{% endif %}</td><td class="num">{{ y.s.total | n }}</td><td class="num">{{ y.s.recalls.length }}</td><td>{{ y.s.named[0].label if y.s.named.length else "—" }}</td></tr>{% endif %}
+{% endfor %}
+</tbody></table></div>
+<p><a href="{{ my.m.url }}">All {{ my.m.make }} {{ my.m.model }} years compared →</a></p>
+
+{% include "partials/faq.njk" %}
+
+<section class="how">
+<h2 id="read">How to read these numbers</h2>
+<ul>
+<li>Complaints are reports owners file with NHTSA. NHTSA does not confirm each one, and one problem can be reported more than once.</li>
+<li>Counts are not adjusted for sales: a model that sold twice as many cars can collect twice the complaints without being worse per car.</li>
+<li>Older model years have had more time to collect complaints.</li>
+<li>A recall listed here may not cover every car of this model year. Check your VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>.</li>
+</ul>
+</section>
+
+<section class="sources" aria-labelledby="src">
+<h2 id="src">Sources</h2>
+<ol>
+<li><a href="{{ my.rec.complaints_source_url }}" rel="nofollow noopener">{{ my.rec.complaints_source_title }}: {{ my.rec.nhtsa_make }} {{ my.rec.nhtsa_model }} {{ my.year }}</a> <span class="checked">checked {{ my.rec.checked }}</span></li>
+<li><a href="{{ my.rec.recalls_source_url }}" rel="nofollow noopener">{{ my.rec.recalls_source_title }}: {{ my.rec.nhtsa_make }} {{ my.rec.nhtsa_model }} {{ my.year }}</a> <span class="checked">checked {{ my.rec.checked }}</span></li>
+<li><a href="https://www.nhtsa.gov/nhtsa-datasets-and-apis" rel="nofollow noopener">NHTSA: Datasets and APIs</a> (what the APIs contain)</li>
+</ol>
+</section>

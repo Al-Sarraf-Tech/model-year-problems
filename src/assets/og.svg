@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#12151c"/>
+  <g transform="translate(90,170) scale(4)"><path d="M12 40l5-12c1-3 3-4 6-4h18c3 0 5 1 6 4l5 12v8h-6v-4H18v4h-6z" fill="none" stroke="#6aa9f0" stroke-width="4" stroke-linejoin="round"/><circle cx="21" cy="38" r="3" fill="#6aa9f0"/><circle cx="43" cy="38" r="3" fill="#6aa9f0"/></g>
+  <text x="420" y="290" font-family="system-ui,Arial,sans-serif" font-size="68" font-weight="700" fill="#e8eaf0">Model Year Problems</text>
+  <text x="420" y="360" font-family="system-ui,Arial,sans-serif" font-size="32" fill="#a3aab8">Owner complaints and recalls by make, model and year</text>
+  <text x="420" y="410" font-family="system-ui,Arial,sans-serif" font-size="28" fill="#a3aab8">Counted from NHTSA's public data</text>
+</svg>

@@ -1,0 +1,29 @@
+---
+permalink: /llms-full.txt
+eleventyExcludeFromCollections: true
+---
+# {{ site.name }}: full data notes
+
+> Counts from NHTSA's public APIs. Complaints are unverified owner reports, not adjusted for sales. Not affiliated with NHTSA or any automaker.
+{% for m in nhtsa.models %}
+## {{ m.name }}, model years {{ m.range }}
+
+URL: {{ site.url }}{{ m.url }}
+Checked: {{ m.checked }}
+Source: NHTSA complaintsByVehicle and recallsByVehicle APIs, make {{ m.years[0].rec.nhtsa_make }}, model {{ m.years[0].rec.nhtsa_model }}.
+{% for y in m.years %}
+- {{ y.year }}: {{ y.s.total }} complaints, {{ y.s.recalls.length }} recalls{% if y.s.named.length %}; top component {{ y.s.named[0].label }} ({{ y.s.named[0].count }}){% endif %}{% if y.noRecords %} (no NHTSA records){% elif y.suspectGap %} (API count looks incomplete){% endif %}{% if y.featured %}. Page: {{ site.url }}/{{ m.makeSlug }}/{{ m.modelSlug }}/{{ y.year }}/{% endif %}
+{%- endfor %}
+{% endfor %}
+{% for y in nhtsa.modelYears %}
+## {{ y.name }}
+
+URL: {{ site.url }}{{ y.url }}
+Checked: {{ y.rec.checked }}
+Sources: {{ y.rec.complaints_source_url }} ; {{ y.rec.recalls_source_url }}
+
+{% for line in y.summary %}{{ line }}
+{% endfor %}
+Complaints by component: {% for c in y.s.components %}{{ c.label }} {{ c.count }} ({{ c.share }}%){% if not loop.last %}; {% endif %}{% endfor %}.
+Recalls: {% for r in y.s.recalls %}{{ r.campaign }} ({{ r.received }}, {{ r.component }}){% if not loop.last %}; {% endif %}{% else %}none{% endfor %}.
+{% endfor %}

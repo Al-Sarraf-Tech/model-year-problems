@@ -1,0 +1,63 @@
+{%- if crumbs -%}{%- set trail = crumbs -%}
+{%- elif page.url == "/" -%}{%- set trail = [{ "name": "Home", "url": "/" }] -%}
+{%- else -%}{%- set trail = [{ "name": "Home", "url": "/" }, { "name": title or site.name }] -%}{%- endif -%}
+{%- set fullTitle = title or site.name -%}
+{%- if title and site.name not in title -%}{%- set fullTitle = title ~ " · " ~ site.name -%}{%- endif -%}
+{%- set desc = description or site.description -%}
+{%- set canon = site.url ~ page.url -%}
+{%- set imageAbs = site | absUrl("/assets/og.svg") -%}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ fullTitle }}</title>
+<meta name="description" content="{{ desc }}">
+<link rel="canonical" href="{{ canon }}">
+{% if robots %}<meta name="robots" content="{{ robots }}">{% else %}<meta name="robots" content="index, follow, max-image-preview:large">{% endif %}
+<meta property="og:title" content="{{ fullTitle }}">
+<meta property="og:description" content="{{ desc }}">
+<meta property="og:type" content="{{ ogType or 'website' }}">
+<meta property="og:url" content="{{ canon }}">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="{{ imageAbs }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ fullTitle }}">
+<meta name="twitter:description" content="{{ desc }}">
+<meta name="twitter:image" content="{{ imageAbs }}">
+<meta name="theme-color" content="#0b5cad">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="{{ cssFile }}">
+<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
+<script type="application/ld+json">{{ site | pageSchema(trail, fullTitle, desc, page.url, my, hub, faqs) | jsonld | safe }}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/"><svg class="mark" width="20" height="20" viewBox="8 18 48 34" aria-hidden="true" focusable="false"><path d="M12 40l5-12c1-3 3-4 6-4h18c3 0 5 1 6 4l5 12v8h-6v-4H18v4h-6z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/></svg>{{ site.name }}</a>
+    <nav aria-label="Main">
+      <a href="/makes/">Makes</a>
+      <a href="/search/">Search</a>
+      <a href="/about/">Method</a>
+    </nav>
+  </div>
+</header>
+<main id="main" class="wrap" {% if pagefindIgnore %}{% else %}data-pagefind-body{% endif %}>
+{% if trail.length > 1 %}
+<nav class="crumbs" aria-label="Breadcrumb">{% for c in trail %}{% if c.url and not loop.last %}<a href="{{ c.url }}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}{% if not loop.last %} › {% endif %}{% endfor %}</nav>
+{% endif %}
+{{ content | safe }}
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <p class="safety"><strong>Got a recall notice or a safety problem?</strong> Look up open recalls for your exact car by VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>, and report a defect to NHTSA at 1-888-327-4236.</p>
+    <p>{{ site.name }} counts what NHTSA publishes; it is <strong>not affiliated with NHTSA, the U.S. Department of Transportation, or any automaker</strong>. Complaints are unverified owner reports. <a href="/about/">Method and sources</a> · <a href="/privacy/">Privacy</a> · <a href="/disclosure/">Disclosure</a> · <a href="/llms.txt">llms.txt</a></p>
+  </div>
+</footer>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ site.cf_beacon_token }}"}'></script>
+</body>
+</html>

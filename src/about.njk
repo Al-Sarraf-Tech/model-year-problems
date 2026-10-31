@@ -1,0 +1,44 @@
+---
+layout: layouts/base.njk
+title: Method and sources
+description: Where Model Year Problems gets its numbers (NHTSA's public complaints and recalls APIs), how they are counted, and what they can't tell you.
+permalink: /about/
+---
+<h1>Method and sources</h1>
+<div class="note"><p><strong>Not affiliated with NHTSA, the U.S. Department of Transportation, or any automaker.</strong> This is an independent site that counts NHTSA's public records. Brand and model names belong to their owners and are used only to say which vehicle a record is about.</p></div>
+
+<h2>Where the data comes from</h2>
+<p>Every number comes from two free public APIs run by the National Highway Traffic Safety Administration (<a href="https://www.nhtsa.gov/nhtsa-datasets-and-apis" rel="nofollow noopener">NHTSA datasets and APIs</a>):</p>
+<ul>
+<li><strong>Complaints</strong>: <code>https://api.nhtsa.gov/complaints/complaintsByVehicle?make=…&amp;model=…&amp;modelYear=…</code></li>
+<li><strong>Recalls</strong>: <code>https://api.nhtsa.gov/recalls/recallsByVehicle?make=…&amp;model=…&amp;modelYear=…</code></li>
+</ul>
+<p>A script (<code>scripts/fetch-nhtsa.mjs</code> in the <a href="{{ site.repo }}">public repository</a>) calls both APIs for each model year, saves the answers as JSON in the repository, and the site is built only from those saved files. Each page links the exact API URLs it was built from and shows the date they were checked. Last full refresh: {{ nhtsa.checked | prettyDate }}.</p>
+
+<h2>How the numbers are counted</h2>
+<ul>
+<li><strong>Complaints</strong> is the number of complaint records NHTSA returns for that make, model and model year.</li>
+<li><strong>Component groups</strong> are NHTSA's own labels, chosen by the person filing. A complaint can name several, so a page's shares add up to more than 100%. We rejoin labels that contain a comma (for example "Service brakes, hydraulic") and fold child-car-seat parts into one "Child seat" group. The one-line descriptions under each label are ours.</li>
+<li><strong>Crash, fire, injuries, deaths</strong> are the flags and counts on the complaint records, added up. They are what owners reported, not NHTSA findings.</li>
+<li><strong>Recalls</strong> are the campaigns NHTSA's recall API returns for that model year. The summary, risk and remedy text on each recall is NHTSA's own wording, shown unchanged and labelled as such.</li>
+<li><strong>Rankings</strong> ("worst year", "2nd-most complaints") compare model years of the same model, 2010–2020, by raw complaint count.</li>
+<li><strong>Possible gaps</strong>: if the API returns no complaints for a year that has recalls, or under 10% of both neighbouring years, the year is highlighted as a likely gap in the API's answer and left out of rankings.{% for m in nhtsa.models %}{% for y in m.years %}{% if y.suspectGap %} Flagged now: {{ y.year }} {{ m.name }} ({{ y.s.total | n }} complaints returned, {{ y.s.recalls.length }} recalls).{% endif %}{% endfor %}{% endfor %}</li>
+</ul>
+
+<h2>What the numbers can't tell you</h2>
+<ul>
+<li>NHTSA does not verify complaints. Some are duplicates, some are wrong about the cause.</li>
+<li>Counts are not divided by sales. A best-seller collects more complaints than a rare car without being worse per car.</li>
+<li>Older model years have had longer to collect complaints; the newest years look better partly because they are young.</li>
+<li>A recall listed for a model year may cover only some of those cars. Your VIN lookup at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a> is the final word for your car.</li>
+</ul>
+
+<h2>What we don't do</h2>
+<ul>
+<li>We don't publish complaint narratives. They are owners' own words and can include personal details; we only publish counts.</li>
+<li>We don't copy other car-problem sites, invent numbers, write reviews, or rate cars.</li>
+<li>No affiliate links (see <a href="/disclosure/">disclosure</a>) and no ads today.</li>
+</ul>
+
+<h2>Which models are covered</h2>
+<p>We started with best-selling Honda, Toyota, Ford, Chevrolet and Nissan models, model years 2010–2020. Every model has a page comparing all its years. Full model-year pages start with the year each model has the most complaints, then the next-worst years; one more page is added most nights. Corrections: <a href="mailto:{{ site.contact }}">{{ site.contact }}</a>.</p>

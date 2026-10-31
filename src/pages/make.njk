@@ -1,0 +1,25 @@
+---js
+{
+  layout: "layouts/base.njk",
+  pagination: { data: "nhtsa.makes", size: 1, alias: "mk" },
+  permalink: (data) => data.mk.url,
+  eleventyComputed: {
+    title: (data) => `${data.mk.make} problems and recalls by model and year`,
+    description: (data) => `${data.mk.make} models compared by NHTSA owner complaints and recalls, model years 2010–2020: ${data.mk.models.map((m) => m.model).join(", ")}.`,
+    crumbs: (data) => [{ name: "Home", url: "/" }, { name: "Makes", url: "/makes/" }, { name: data.mk.make }],
+  },
+}
+---
+<h1>{{ mk.make }} problems and recalls by model</h1>
+<p class="last-checked">NHTSA data checked {{ mk.checked | prettyDate }}</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Model</th><th class="num">Complaints 2010–2020</th><th class="num">Recall campaigns</th><th>Most complaints</th><th>Fewest complaints</th></tr></thead>
+<tbody>
+{% for m in mk.models %}{%- set w = m.rankable[0] -%}{%- set b = m.rankable | last -%}<tr><td><a href="{{ m.url }}">{{ m.model }}</a></td><td class="num">{{ m.totalComplaints | n }}</td><td class="num">{{ m.totalRecalls }}</td><td>{% if w.featured %}<a href="{{ m.url }}{{ w.year }}/">{{ w.year }}</a>{% else %}{{ w.year }}{% endif %} ({{ w.s.total | n }})</td><td>{{ b.year }} ({{ b.s.total | n }})</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="muted">Totals add every model year 2010–2020 that NHTSA has records for. Bigger sellers collect more complaints, so compare years within a model before comparing models.</p>
+<h2>Model-year pages</h2>
+<ul class="cards">
+{% for m in mk.models %}{% for y in m.years %}{% if y.featured %}<li><a href="{{ m.url }}{{ y.year }}/"><strong>{{ y.year }} {{ m.make }} {{ m.model }}</strong><span>{{ y.s.total | n }} complaints · {{ y.s.recalls.length }} recalls · top: {{ y.s.named[0].label | lower }}</span></a></li>{% endif %}{% endfor %}{% endfor %}
+</ul>

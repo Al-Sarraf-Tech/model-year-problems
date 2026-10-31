@@ -1,0 +1,28 @@
+---
+permalink: /llms.txt
+eleventyExcludeFromCollections: true
+---
+# {{ site.name }}
+
+> {{ site.tagline }}. {{ site.description }}
+
+All counts are computed from NHTSA's public Complaints API and Recalls API (api.nhtsa.gov) and saved with the date checked. Complaints are unverified owner reports and are not adjusted for sales volume. The site is not affiliated with NHTSA or any automaker. No ratings, no reviews, no affiliate links (`affiliates_enabled` is {{ site.affiliates_enabled }}). AI crawlers are welcome; see {{ site.url }}/robots.txt. Data last refreshed {{ nhtsa.checked }}.
+
+## Model-year pages
+{% for y in nhtsa.modelYears %}
+- [{{ y.name }} problems, complaints and recalls]({{ site.url }}{{ y.url }}): {{ y.s.total }} complaints, {{ y.s.recalls.length }} recalls; top component {{ y.s.named[0].label }}. Checked {{ y.rec.checked }}.
+{%- endfor %}
+
+## Models (every year 2010–2020 compared)
+{% for m in nhtsa.models %}
+- [{{ m.name }} problems by year]({{ site.url }}{{ m.url }}): most complaints {{ m.rankable[0].year }} ({{ m.rankable[0].s.total }}), fewest {{ (m.rankable | last).year }} ({{ (m.rankable | last).s.total }}).
+{%- endfor %}
+
+## Makes
+{% for mk in nhtsa.makes %}
+- [{{ mk.make }}]({{ site.url }}{{ mk.url }})
+{%- endfor %}
+
+## Also
+- [Method and sources]({{ site.url }}/about/)
+- [Full data notes for every page]({{ site.url }}/llms-full.txt)

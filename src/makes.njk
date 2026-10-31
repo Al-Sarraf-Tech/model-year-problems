@@ -1,0 +1,14 @@
+---
+layout: layouts/base.njk
+title: All makes
+description: Every make on Model Year Problems, with NHTSA owner complaint and recall counts by model, model years 2010–2020.
+permalink: /makes/
+---
+<h1>All makes</h1>
+<div class="tablewrap"><table>
+<thead><tr><th>Make</th><th>Models covered</th><th class="num">Complaints 2010–2020</th></tr></thead>
+<tbody>
+{% for mk in nhtsa.makes %}<tr><td><a href="{{ mk.url }}">{{ mk.make }}</a></td><td>{% for m in mk.models %}<a href="{{ m.url }}">{{ m.model }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</td><td class="num">{{ mk.totalComplaints | n }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="muted">More makes and models are added over time. See <a href="/about/">method</a> for how a model is chosen.</p>

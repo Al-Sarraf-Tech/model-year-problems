@@ -1,0 +1,7 @@
+{% if faqs and faqs.length %}
+<section class="faq">
+<h2 id="faq">Quick answers</h2>
+{% for f in faqs %}<details{% if loop.first %} open{% endif %}><summary>{{ f.q }}</summary><p>{{ f.a }}</p></details>
+{% endfor %}
+</section>
+{% endif %}
