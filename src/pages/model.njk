@@ -1,7 +1,7 @@
 ---js
 {
   layout: "layouts/base.njk",
-  pagination: { data: "nhtsa.models", size: 1, alias: "hub" },
+  pagination: { data: "nhtsa.models", size: 1, alias: "hub", addAllPagesToCollections: true },
   permalink: (data) => data.hub.url,
   eleventyComputed: {
     title: (data) => `${data.hub.name} problems by year: complaints and recalls ${data.hub.range}`,

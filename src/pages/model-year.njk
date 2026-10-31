@@ -2,7 +2,7 @@
 {
   layout: "layouts/base.njk",
   ogType: "article",
-  pagination: { data: "nhtsa.modelYears", size: 1, alias: "my" },
+  pagination: { data: "nhtsa.modelYears", size: 1, alias: "my", addAllPagesToCollections: true },
   permalink: (data) => data.my.url,
   eleventyComputed: {
     title: (data) => `${data.my.name} problems, complaints and recalls`,

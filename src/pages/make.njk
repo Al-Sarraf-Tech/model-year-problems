@@ -1,7 +1,7 @@
 ---js
 {
   layout: "layouts/base.njk",
-  pagination: { data: "nhtsa.makes", size: 1, alias: "mk" },
+  pagination: { data: "nhtsa.makes", size: 1, alias: "mk", addAllPagesToCollections: true },
   permalink: (data) => data.mk.url,
   eleventyComputed: {
     title: (data) => `${data.mk.make} problems and recalls by model and year`,

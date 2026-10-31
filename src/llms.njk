@@ -2,27 +2,27 @@
 permalink: /llms.txt
 eleventyExcludeFromCollections: true
 ---
-# {{ site.name }}
+# {{ site.name | safe }}
 
-> {{ site.tagline }}. {{ site.description }}
+> {{ site.tagline | safe }}. {{ site.description | safe }}
 
-All counts are computed from NHTSA's public Complaints API and Recalls API (api.nhtsa.gov) and saved with the date checked. Complaints are unverified owner reports and are not adjusted for sales volume. The site is not affiliated with NHTSA or any automaker. No ratings, no reviews, no affiliate links (`affiliates_enabled` is {{ site.affiliates_enabled }}). AI crawlers are welcome; see {{ site.url }}/robots.txt. Data last refreshed {{ nhtsa.checked }}.
+All counts are computed from NHTSA's public Complaints API and Recalls API (api.nhtsa.gov) and saved with the date checked. Complaints are unverified owner reports and are not adjusted for sales volume. The site is not affiliated with NHTSA or any automaker. No ratings, no reviews, no affiliate links (`affiliates_enabled` is {{ site.affiliates_enabled | safe }}). AI crawlers are welcome; see {{ site.url | safe }}/robots.txt. Data last refreshed {{ nhtsa.checked | safe }}.
 
 ## Model-year pages
 {% for y in nhtsa.modelYears %}
-- [{{ y.name }} problems, complaints and recalls]({{ site.url }}{{ y.url }}): {{ y.s.total }} complaints, {{ y.s.recalls.length }} recalls; top component {{ y.s.named[0].label }}. Checked {{ y.rec.checked }}.
+- [{{ y.name | safe }} problems, complaints and recalls]({{ site.url | safe }}{{ y.url | safe }}): {{ y.s.total | safe }} complaints, {{ y.s.recalls.length | safe }} recalls; top component {{ y.s.named[0].label | safe }}. Checked {{ y.rec.checked | safe }}.
 {%- endfor %}
 
 ## Models (every year 2010–2020 compared)
 {% for m in nhtsa.models %}
-- [{{ m.name }} problems by year]({{ site.url }}{{ m.url }}): most complaints {{ m.rankable[0].year }} ({{ m.rankable[0].s.total }}), fewest {{ (m.rankable | last).year }} ({{ (m.rankable | last).s.total }}).
+- [{{ m.name | safe }} problems by year]({{ site.url | safe }}{{ m.url | safe }}): most complaints {{ m.rankable[0].year | safe }} ({{ m.rankable[0].s.total | safe }}), fewest {{ (m.rankable | last).year | safe }} ({{ (m.rankable | last).s.total | safe }}).
 {%- endfor %}
 
 ## Makes
 {% for mk in nhtsa.makes %}
-- [{{ mk.make }}]({{ site.url }}{{ mk.url }})
+- [{{ mk.make | safe }}]({{ site.url | safe }}{{ mk.url | safe }})
 {%- endfor %}
 
 ## Also
-- [Method and sources]({{ site.url }}/about/)
-- [Full data notes for every page]({{ site.url }}/llms-full.txt)
+- [Method and sources]({{ site.url | safe }}/about/)
+- [Full data notes for every page]({{ site.url | safe }}/llms-full.txt)

@@ -2,28 +2,28 @@
 permalink: /llms-full.txt
 eleventyExcludeFromCollections: true
 ---
-# {{ site.name }}: full data notes
+# {{ site.name | safe }}: full data notes
 
 > Counts from NHTSA's public APIs. Complaints are unverified owner reports, not adjusted for sales. Not affiliated with NHTSA or any automaker.
 {% for m in nhtsa.models %}
-## {{ m.name }}, model years {{ m.range }}
+## {{ m.name | safe }}, model years {{ m.range | safe }}
 
-URL: {{ site.url }}{{ m.url }}
-Checked: {{ m.checked }}
-Source: NHTSA complaintsByVehicle and recallsByVehicle APIs, make {{ m.years[0].rec.nhtsa_make }}, model {{ m.years[0].rec.nhtsa_model }}.
+URL: {{ site.url | safe }}{{ m.url | safe }}
+Checked: {{ m.checked | safe }}
+Source: NHTSA complaintsByVehicle and recallsByVehicle APIs, make {{ m.years[0].rec.nhtsa_make | safe }}, model {{ m.years[0].rec.nhtsa_model | safe }}.
 {% for y in m.years %}
-- {{ y.year }}: {{ y.s.total }} complaints, {{ y.s.recalls.length }} recalls{% if y.s.named.length %}; top component {{ y.s.named[0].label }} ({{ y.s.named[0].count }}){% endif %}{% if y.noRecords %} (no NHTSA records){% elif y.suspectGap %} (API count looks incomplete){% endif %}{% if y.featured %}. Page: {{ site.url }}/{{ m.makeSlug }}/{{ m.modelSlug }}/{{ y.year }}/{% endif %}
+- {{ y.year | safe }}: {{ y.s.total | safe }} complaints, {{ y.s.recalls.length | safe }} recalls{% if y.s.named.length %}; top component {{ y.s.named[0].label | safe }} ({{ y.s.named[0].count | safe }}){% endif %}{% if y.noRecords %} (no NHTSA records){% elif y.suspectGap %} (API count looks incomplete){% endif %}{% if y.featured %}. Page: {{ site.url | safe }}/{{ m.makeSlug | safe }}/{{ m.modelSlug | safe }}/{{ y.year | safe }}/{% endif %}
 {%- endfor %}
 {% endfor %}
 {% for y in nhtsa.modelYears %}
-## {{ y.name }}
+## {{ y.name | safe }}
 
-URL: {{ site.url }}{{ y.url }}
-Checked: {{ y.rec.checked }}
-Sources: {{ y.rec.complaints_source_url }} ; {{ y.rec.recalls_source_url }}
+URL: {{ site.url | safe }}{{ y.url | safe }}
+Checked: {{ y.rec.checked | safe }}
+Sources: {{ y.rec.complaints_source_url | safe }} ; {{ y.rec.recalls_source_url | safe }}
 
-{% for line in y.summary %}{{ line }}
+{% for line in y.summary %}{{ line | safe }}
 {% endfor %}
-Complaints by component: {% for c in y.s.components %}{{ c.label }} {{ c.count }} ({{ c.share }}%){% if not loop.last %}; {% endif %}{% endfor %}.
-Recalls: {% for r in y.s.recalls %}{{ r.campaign }} ({{ r.received }}, {{ r.component }}){% if not loop.last %}; {% endif %}{% else %}none{% endfor %}.
+Complaints by component: {% for c in y.s.components %}{{ c.label | safe }} {{ c.count | safe }} ({{ c.share | safe }}%){% if not loop.last %}; {% endif %}{% endfor %}.
+Recalls: {% for r in y.s.recalls %}{{ r.campaign | safe }} ({{ r.received | safe }}, {{ r.component | safe }}){% if not loop.last %}; {% endif %}{% else %}none{% endfor %}.
 {% endfor %}
