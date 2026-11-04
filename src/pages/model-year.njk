@@ -31,10 +31,10 @@
 <div class="stats" role="list">
   <div class="stat" role="listitem"><b>{{ s.total | n }}</b><span>owner complaints</span></div>
   <div class="stat" role="listitem"><b>{{ s.recalls.length }}</b><span>recall campaigns</span></div>
-  <div class="stat" role="listitem"><b>{{ s.crash | n }}</b><span>complaints reporting a crash</span></div>
-  <div class="stat" role="listitem"><b>{{ s.fire | n }}</b><span>complaints reporting a fire</span></div>
-  <div class="stat" role="listitem"><b>{{ s.injuries | n }}</b><span>injuries reported</span></div>
-  <div class="stat" role="listitem"><b>{{ s.deaths | n }}</b><span>deaths reported</span></div>
+  <div class="stat" role="listitem"><b>{{ s.crash | n }}</b><span>complaint{% if s.crash != 1 %}s{% endif %} reporting a crash</span></div>
+  <div class="stat" role="listitem"><b>{{ s.fire | n }}</b><span>complaint{% if s.fire != 1 %}s{% endif %} reporting a fire</span></div>
+  <div class="stat" role="listitem"><b>{{ s.injuries | n }}</b><span>{% if s.injuries == 1 %}injury{% else %}injuries{% endif %} reported</span></div>
+  <div class="stat" role="listitem"><b>{{ s.deaths | n }}</b><span>{% if s.deaths == 1 %}death{% else %}deaths{% endif %} reported</span></div>
 </div>
 
 {% if s.parkIt.length %}
