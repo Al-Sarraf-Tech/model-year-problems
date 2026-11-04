@@ -9,6 +9,7 @@ extra_pages:
   - ford/escape/2014
   - ford/fusion/2013
   - ford/escape/2018
+  - ford/fusion/2016
 models:
   - { make: Honda, model: Accord, nhtsa_make: HONDA, nhtsa_model: ACCORD }
   - { make: Honda, model: Civic, nhtsa_make: HONDA, nhtsa_model: CIVIC }
