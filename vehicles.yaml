@@ -6,6 +6,7 @@ years: [2010, 2020]
 featured_count: 30
 extra_pages:
   - honda/accord/2014
+  - ford/escape/2014
 models:
   - { make: Honda, model: Accord, nhtsa_make: HONDA, nhtsa_model: ACCORD }
   - { make: Honda, model: Civic, nhtsa_make: HONDA, nhtsa_model: CIVIC }

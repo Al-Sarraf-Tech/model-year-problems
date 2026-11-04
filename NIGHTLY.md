@@ -33,7 +33,7 @@ no copied text from other car-problem sites, no complaint narratives, no reviews
 - Not affiliated with NHTSA or any automaker: the footer note must stay on every page (build checks it).
 
 ## Backlog: model-year pages (highest complaint counts first)
-- [ ] `ford/escape/2014` (2014 Ford Escape: 2,089 complaints, 16 recalls on 2026-10-31)
+- [x] `ford/escape/2014` (2014 Ford Escape: 2,089 complaints, 16 recalls on 2026-10-31)
 - [ ] `ford/fusion/2013` (2013 Ford Fusion: 1,957 complaints, 19 recalls on 2026-10-31)
 - [ ] `ford/escape/2018` (2018 Ford Escape: 1,822 complaints, 4 recalls on 2026-10-31)
 - [ ] `ford/fusion/2016` (2016 Ford Fusion: 1,736 complaints, 13 recalls on 2026-10-31)
