@@ -16,6 +16,9 @@ extra_pages:
   - ford/fusion/2014
   - ford/escape/2011
   - ford/explorer/2020
+  - ford/explorer/2011
+  - ford/focus/2016
+  - ford/escape/2016
 models:
   - { make: Honda, model: Accord, nhtsa_make: HONDA, nhtsa_model: ACCORD }
   - { make: Honda, model: Civic, nhtsa_make: HONDA, nhtsa_model: CIVIC }
