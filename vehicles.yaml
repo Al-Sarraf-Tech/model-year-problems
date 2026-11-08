@@ -19,6 +19,9 @@ extra_pages:
   - ford/explorer/2011
   - ford/focus/2016
   - ford/escape/2016
+  - ford/escape/2015
+  - ford/fusion/2017
+  - chevrolet/silverado-1500/2019
 models:
   - { make: Honda, model: Accord, nhtsa_make: HONDA, nhtsa_model: ACCORD }
   - { make: Honda, model: Civic, nhtsa_make: HONDA, nhtsa_model: CIVIC }
