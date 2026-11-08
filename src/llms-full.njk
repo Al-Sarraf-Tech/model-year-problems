@@ -15,6 +15,18 @@ Source: NHTSA complaintsByVehicle and recallsByVehicle APIs, make {{ m.years[0].
 - {{ y.year | safe }}: {{ y.s.total | safe }} complaints, {{ y.s.recalls.length | safe }} recalls{% if y.s.named.length %}; top component {{ y.s.named[0].label | safe }} ({{ y.s.named[0].count | safe }}){% endif %}{% if y.noRecords %} (no NHTSA records){% elif y.suspectGap %} (API count looks incomplete){% endif %}{% if y.featured %}. Page: {{ site.url | safe }}/{{ m.makeSlug | safe }}/{{ m.modelSlug | safe }}/{{ y.year | safe }}/{% endif %}
 {%- endfor %}
 {% endfor %}
+{% for t in nhtsa.topics %}
+## {{ t.title | safe }}
+
+URL: {{ site.url | safe }}{{ t.url | safe }}
+Checked: {{ t.checked | safe }}
+Complaints naming {{ t.label | safe }}: {{ t.complaintNaming | safe }} of {{ t.totalComplaints | safe }}. Matching recall campaigns: {{ t.recalls.length | safe }}.
+
+{% for line in t.summary %}{{ line | safe }}
+{% endfor %}
+By model year: {% for y in t.years %}{{ y.year | safe }} {{ y.comp.count | safe }}/{{ y.s.total | safe }}{% if y.noRecords %} (no NHTSA records){% elif y.suspectGap %} (API count looks incomplete){% endif %}{% if not loop.last %}; {% endif %}{% endfor %}.
+Matching recalls: {% for r in t.recalls %}{{ r.campaign | safe }} ({{ r.received | safe }}, years {{ r.years | join(", ") | safe }}{% if r.has_potential_units %}, potential units {{ r.potential_units | safe }} for the whole campaign{% endif %}){% if not loop.last %}; {% endif %}{% else %}none{% endfor %}.
+{% endfor %}
 {% for y in nhtsa.modelYears %}
 ## {{ y.name | safe }}
 

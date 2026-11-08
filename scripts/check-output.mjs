@@ -3,6 +3,7 @@
 // not-affiliated note, search index exists, no affiliate links slipped in.
 import fs from "node:fs";
 import path from "node:path";
+import * as yaml from "js-yaml";
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const SITE = path.join(ROOT, "_site");
@@ -32,7 +33,35 @@ for (const f of files) {
   }
   if (!/not affiliated with NHTSA/.test(html)) errors.push(`${rel}: missing not-affiliated note`);
   if (/NaN|undefined|\[object Object\]/.test(html.replace(/<script[\s\S]*?<\/script>/g, ""))) errors.push(`${rel}: NaN/undefined/[object Object] in page text`);
+  if (/worst year|bad year/i.test(html)) errors.push(`${rel}: worst/bad year wording`);
+  if (!/noindex/.test(html)) {
+    if (!/<link rel="canonical" href="https:\/\/modelyearproblems\.com\//.test(html)) errors.push(`${rel}: missing canonical`);
+    if (!/<meta name="description" content="[^"]{20,}/.test(html)) errors.push(`${rel}: missing description`);
+    if (/application\/ld\+json">\{/.test(html) && /"@type":"Article"/.test(html) && /"datePublished"/.test(html)) errors.push(`${rel}: Article datePublished is set`);
+  }
 }
+const cfg = yaml.load(fs.readFileSync(path.join(ROOT, "vehicles.yaml"), "utf8"), { schema: yaml.CORE_SCHEMA });
+const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+for (const t of cfg.component_topics || []) {
+  const rel = `${slug(t.make)}/${slug(t.model)}/${t.slug}/index.html`;
+  const file = path.join(SITE, rel);
+  if (!fs.existsSync(file)) { errors.push(`missing topic page ${rel}`); continue; }
+  const html = fs.readFileSync(file, "utf8");
+  if (!html.includes("https://www.nhtsa.gov/recalls")) errors.push(`${rel}: missing VIN recall link`);
+  if (!html.includes("complaintsByVehicle")) errors.push(`${rel}: missing complaints API citation`);
+  if (!html.includes("campaignNumber")) errors.push(`${rel}: missing campaignNumber citation`);
+  if (!html.includes("not a reliability")) errors.push(`${rel}: missing ranking limitation`);
+}
+const sitemap = fs.readFileSync(path.join(SITE, "sitemap.xml"), "utf8");
+const lastmods = [...sitemap.matchAll(/<lastmod>([^<]*)<\/lastmod>/g)].map((m) => m[1]);
+if (!lastmods.length || lastmods.some((d) => !/^\d{4}-\d{2}-\d{2}$/.test(d))) errors.push("sitemap lastmod is not YYYY-MM-DD");
+if (sitemap.includes("/search/") || sitemap.includes("404")) errors.push("sitemap includes a noindex URL");
+for (const t of cfg.component_topics || []) {
+  const loc = `https://modelyearproblems.com/${slug(t.make)}/${slug(t.model)}/${t.slug}/`;
+  if (!sitemap.includes(`<loc>${loc}</loc>`)) errors.push(`sitemap missing ${loc}`);
+}
+const robots = fs.readFileSync(path.join(SITE, "robots.txt"), "utf8");
+if (!/Disallow:\s*\/pagefind\//.test(robots) || !/Sitemap:\s*https:\/\/modelyearproblems\.com\/sitemap\.xml/.test(robots)) errors.push("robots.txt missing pagefind disallow or sitemap");
 if (!fs.existsSync(path.join(SITE, "pagefind", "pagefind-ui.js"))) errors.push("pagefind index missing (_site/pagefind)");
 for (const f of ["robots.txt", "sitemap.xml", "llms.txt", "llms-full.txt", "CNAME"]) if (!fs.existsSync(path.join(SITE, f))) errors.push(`missing ${f}`);
 

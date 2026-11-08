@@ -13,9 +13,9 @@
       const h = data.hub, w = h.rankable[0], b = h.rankable.at(-1), fmt = (n) => n.toLocaleString("en-US");
       const byRecalls = [...h.years].sort((x, y) => y.s.recalls.length - x.s.recalls.length)[0];
       return [
-        { q: `What is the worst year for the ${h.name}?`, a: `By NHTSA owner complaints, ${w.year} (${fmt(w.s.total)} complaints; top component ${w.s.named[0]?.label.toLowerCase()}). That is a raw count, not adjusted for sales or age.` },
-        { q: `Which ${h.name} year has the fewest complaints?`, a: `${b.year}, with ${fmt(b.s.total)} complaints in NHTSA's data, among model years ${h.range}.` },
-        { q: `Which ${h.name} year has the most recalls?`, a: `${byRecalls.year}, with ${byRecalls.s.recalls.length} recall campaigns in NHTSA's recall database.` },
+        { q: `Which ${h.name} model year has the most owner complaints?`, a: `${w.year}, with ${fmt(w.s.total)} complaints in NHTSA's data (owners name ${w.s.named[0]?.label.toLowerCase()} most often). That is a raw count among model years ${h.range}. It is not adjusted for sales or age, and it is not a reliability or safety ranking.` },
+        { q: `Which ${h.name} year has the fewest complaints?`, a: `${b.year}, with ${fmt(b.s.total)} complaints among model years ${h.range} that are not flagged as API gaps. Fewer complaints is not a reliability or safety ranking.` },
+        { q: `Which ${h.name} year has the most recalls?`, a: `${byRecalls.year}, with ${byRecalls.s.recalls.length} recall campaigns in NHTSA's recall database. A campaign may cover only some vehicles of that model year. Check a VIN at nhtsa.gov/recalls.` },
       ];
     },
     crumbs: (data) => [{ name: "Home", url: "/" }, { name: data.hub.make, url: `/${data.hub.makeSlug}/` }, { name: data.hub.model }],
@@ -30,7 +30,7 @@
 <h2 id="sum">Summary</h2>
 <p>Across model years {{ hub.range }}, NHTSA's public databases list {{ hub.totalComplaints | n }} owner complaints and {{ hub.totalRecalls }} distinct recall campaigns for the {{ hub.name }}.</p>
 <p>The year with the most complaints is <strong>{{ w.year }}</strong> ({{ w.s.total | n }}; owners name {{ w.s.named[0].label | lower }} most). The year with the fewest is <strong>{{ b.year }}</strong> ({{ b.s.total | n }}). The median year has {{ hub.medianComplaints | n }}.</p>
-<p>These are raw counts. They are not adjusted for how many of each year were sold, and older years have had longer to collect complaints.</p>
+<p>These are raw counts. They are not a reliability or safety ranking, they are not adjusted for how many of each year were sold, and older years have had longer to collect complaints.</p>
 </section>
 
 <h2 id="years">Every model year</h2>
@@ -40,7 +40,14 @@
 {% for y in hub.years %}<tr{% if y.suspectGap %} class="flag"{% endif %}><td>{% if y.featured %}<a href="/{{ hub.makeSlug }}/{{ hub.modelSlug }}/{{ y.year }}/">{{ y.year }}</a>{% else %}{{ y.year }}{% endif %}{% if y.noRecords %} — no NHTSA records (likely not sold as this model year){% elif y.suspectGap %} — NHTSA's API count looks incomplete{% endif %}</td><td class="num">{{ y.s.total | n }}</td><td class="num">{{ y.s.recalls.length }}</td><td class="num">{{ y.s.crash | n }}</td><td class="num">{{ y.s.fire | n }}</td><td>{{ y.s.named[0].label if y.s.named.length else "—" }}{% if y.s.named.length %} <span class="muted">({{ y.s.named[0].share }}%)</span>{% endif %}</td></tr>
 {% endfor %}
 </tbody></table></div>
-<p class="muted">Linked years have a full page with every component and recall. Other years get pages over time; the counts above are already live.{% if hub.years | selectattr("suspectGap") | length %} Highlighted rows look like gaps in what NHTSA's API returns for that year, not a quiet year; they are left out of rankings.{% endif %}</p>
+<p class="muted">Linked years have a full page with every component and recall. Other years get pages over time; the counts above are already live.{% if hub.years | selectattr("suspectGap") | length %} Highlighted rows look like gaps in what NHTSA's API returns for that year, not a quiet year; they are left out of the complaint-count order.{% endif %}</p>
+{% if hub.topics.length %}
+<h2 id="components">Component pages</h2>
+<ul class="cards">
+{% for t in hub.topics %}<li><a href="{{ t.url }}"><strong>{{ t.label }}</strong><span>{{ t.complaintNaming | n }} complaints name this group · {{ t.recalls.length }} matching recall campaigns</span></a></li>{% endfor %}
+</ul>
+<p class="muted">A component page follows one NHTSA group across model years. Complaint counts and recall campaigns stay separate, and neither is a reliability ranking.</p>
+{% endif %}
 
 {% include "partials/faq.njk" %}
 

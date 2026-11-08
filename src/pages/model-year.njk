@@ -26,6 +26,9 @@
 <h2 id="sum">Summary</h2>
 {% for line in my.summary %}<p>{{ line }}</p>
 {% endfor %}
+{% if s.named.length and s.named[0].topicUrl %}
+<p>Counts for {{ s.named[0].label | lower }} on other {{ my.m.model }} years, and the recalls whose component is {{ s.named[0].label | lower }}, are on the <a href="{{ s.named[0].topicUrl }}">{{ my.m.model }} {{ s.named[0].label | lower }} page</a>.</p>
+{% endif %}
 </section>
 
 <div class="stats" role="list">
@@ -47,13 +50,13 @@
 <div class="tablewrap"><table>
 <thead><tr><th>Component group (NHTSA label)</th><th class="num">Complaints</th><th class="num">Share</th></tr></thead>
 <tbody>
-{% for c in s.components %}<tr><td><strong>{{ c.label }}</strong>{% if c.note %}<span class="compnote">{{ c.note }}</span>{% endif %}<span class="bar" style="width:{{ c.count | barw(maxc) }}%"></span></td><td class="num">{{ c.count | n }}</td><td class="num">{{ c.share }}%</td></tr>
+{% for c in s.components %}<tr><td><strong>{% if c.topicUrl %}<a href="{{ c.topicUrl }}">{{ c.label }}</a>{% else %}{{ c.label }}{% endif %}</strong>{% if c.note %}<span class="compnote">{{ c.note }}</span>{% endif %}{% if c.topicUrl %}<span class="compnote">Compared across {{ my.m.model }} years</span>{% endif %}<span class="bar" style="width:{{ c.count | barw(maxc) }}%"></span></td><td class="num">{{ c.count | n }}</td><td class="num">{{ c.share }}%</td></tr>
 {% endfor %}
 </tbody></table></div>
 
 <h2 id="recalls">Recalls ({{ s.recalls.length }})</h2>
 {% if s.recalls.length %}
-<p class="muted">Newest first. Summary, risk and remedy are NHTSA's own recall text (a U.S. government record), shown as published. A recall applies only to the vehicles its notice names; your VIN lookup is the final word.</p>
+<p class="muted">Newest first. Summary, risk and remedy are NHTSA's own recall text (a U.S. government record), shown as published. A recall applies only to the vehicles its notice names. The complaint counts above are a separate record and are not the number of vehicles affected. Your VIN lookup is the final word.</p>
 {% for r in s.recalls %}
 <article class="recall" id="r-{{ r.campaign }}">
 <h3>NHTSA campaign {{ r.campaign }}{% if r.park_it %}<span class="tag">Park it</span>{% endif %}{% if r.park_outside %}<span class="tag">Park outside</span>{% endif %}</h3>
@@ -61,6 +64,10 @@
 <p><strong>What's wrong:</strong> {{ r.summary }}</p>
 {% if r.consequence %}<p><strong>Risk:</strong> {{ r.consequence }}</p>{% endif %}
 {% if r.remedy %}<p><strong>Remedy:</strong> {{ r.remedy }}</p>{% endif %}
+{% if r.has_potential_units %}
+<p class="muted">NHTSA's <a href="{{ r.potential_units_source_url }}" rel="nofollow noopener">campaignNumber record</a> lists {{ r.potential_units | n }} potential units affected for campaign {{ r.campaign }} as a whole{% if r.campaign_vehicle_count > 1 %}, across {{ r.campaign_vehicle_count }} model rows in that record{% endif %}. That figure is not a complaint count and is not a count of every {{ my.name }}.</p>
+{% endif %}
+{% if r.topicUrl %}<p class="muted">Compared with other years on the <a href="{{ r.topicUrl }}">{{ my.m.model }} {{ r.component | comp | lower }} page</a>.</p>{% endif %}
 </article>
 {% endfor %}
 {% else %}
@@ -94,7 +101,8 @@
 <li>Complaints are reports owners file with NHTSA. NHTSA does not confirm each one, and one problem can be reported more than once.</li>
 <li>Counts are not adjusted for sales: a model that sold twice as many cars can collect twice the complaints without being worse per car.</li>
 <li>Older model years have had more time to collect complaints.</li>
-<li>A recall listed here may not cover every car of this model year. Check your VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>.</li>
+<li>A recall listed here may not cover every car of this model year. The complaint count is not the number of vehicles affected. Check your VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>.</li>
+<li>If a recall shows a potential unit count, that number is from NHTSA's campaignNumber API for the whole campaign. It can include other models and years.</li>
 </ul>
 </section>
 
@@ -103,6 +111,8 @@
 <ol>
 <li><a href="{{ my.rec.complaints_source_url }}" rel="nofollow noopener">{{ my.rec.complaints_source_title }}: {{ my.rec.nhtsa_make }} {{ my.rec.nhtsa_model }} {{ my.year }}</a> <span class="checked">checked {{ my.rec.checked }}</span></li>
 <li><a href="{{ my.rec.recalls_source_url }}" rel="nofollow noopener">{{ my.rec.recalls_source_title }}: {{ my.rec.nhtsa_make }} {{ my.rec.nhtsa_model }} {{ my.year }}</a> <span class="checked">checked {{ my.rec.checked }}</span></li>
+{% set withUnits = s.recalls | selectattr("has_potential_units") %}
+{% if withUnits | length %}<li>Potential units affected, where a recall shows one, come from NHTSA's Recalls API (<code>campaignNumber</code>), linked on that recall. The figure is for the whole campaign. Checked {{ my.rec.checked }}.</li>{% endif %}
 <li><a href="https://www.nhtsa.gov/nhtsa-datasets-and-apis" rel="nofollow noopener">NHTSA: Datasets and APIs</a> (what the APIs contain)</li>
 </ol>
 </section>

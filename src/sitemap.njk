@@ -4,7 +4,8 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{%- for p in collections.all %}{% if p.url and not p.url.endsWith(".html") and p.url != "/search/" %}
-  <url><loc>{{ site.url }}{{ p.url }}</loc><lastmod>{{ p.data.my.rec.checked if p.data.my else (p.data.hub.checked if p.data.hub else nhtsa.checked) }}</lastmod></url>
+{%- for p in collections.all %}{% if p.url and not p.url.endsWith(".html") and p.url != "/search/" and p.data.robots != "noindex" %}
+  {%- set lastmod = p.data.my.rec.checked if p.data.my else (p.data.topic.checked if p.data.topic else (p.data.hub.checked if p.data.hub else (p.data.mk.checked if p.data.mk else nhtsa.checked))) -%}
+  <url><loc>{{ site.url }}{{ p.url }}</loc><lastmod>{{ lastmod }}</lastmod></url>
 {%- endif %}{% endfor %}
 </urlset>

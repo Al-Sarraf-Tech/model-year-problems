@@ -1,8 +1,11 @@
 # Seed list. scripts/fetch-nhtsa.mjs fetches every make/model for every year in `years`.
 # NHTSA spells model names its own way; `nhtsa_model` is the exact value its API matches.
 years: [2010, 2020]
-# Model-year pages: the worst year of every model, then the next-worst years overall,
-# up to featured_count. extra_pages adds specific ones (make/model/year slugs).
+# Model-year pages: the year with the most owner complaints for every model, then the
+# next-highest complaint counts overall, up to featured_count. extra_pages adds specific
+# ones (make/model/year slugs). Complaint count is not a reliability or safety ranking.
+# component_topics publishes one cross-year page per make + model + NHTSA component group.
+# Counts on those pages are computed from the cache. See NIGHTLY.md for the evidence bar.
 featured_count: 30
 extra_pages:
   - honda/accord/2014
@@ -22,6 +25,9 @@ extra_pages:
   - ford/escape/2015
   - ford/fusion/2017
   - chevrolet/silverado-1500/2019
+component_topics:
+  - { make: Ford, model: Focus, component: POWER TRAIN, slug: power-train }
+  - { make: Ford, model: Fusion, component: STEERING, slug: steering }
 models:
   - { make: Honda, model: Accord, nhtsa_make: HONDA, nhtsa_model: ACCORD }
   - { make: Honda, model: Civic, nhtsa_make: HONDA, nhtsa_model: CIVIC }

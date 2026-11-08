@@ -15,6 +15,8 @@
 <meta name="description" content="{{ desc }}">
 <link rel="canonical" href="{{ canon }}">
 {% if robots %}<meta name="robots" content="{{ robots }}">{% else %}<meta name="robots" content="index, follow, max-image-preview:large">{% endif %}
+{%- set modified = my.rec.checked if my else (topic.checked if topic else (hub.checked if hub else (mk.checked if mk else ""))) -%}
+{% if modified %}<meta property="article:modified_time" content="{{ modified }}">{% endif %}
 <meta property="og:title" content="{{ fullTitle }}">
 <meta property="og:description" content="{{ desc }}">
 <meta property="og:type" content="{{ ogType or 'website' }}">
@@ -32,7 +34,7 @@
 <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{{ cssFile }}">
 <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
-<script type="application/ld+json">{{ site | pageSchema(trail, fullTitle, desc, page.url, my, hub, faqs) | jsonld | safe }}</script>
+<script type="application/ld+json">{{ site | pageSchema(trail, title or site.name, desc, page.url, my, hub, faqs, topic, mk) | jsonld | safe }}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>

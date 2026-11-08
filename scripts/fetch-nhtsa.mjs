@@ -52,6 +52,49 @@ const isoFromNhtsa = (s, order) => {
   return `${y}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`;
 };
 
+// recallsByVehicle does not include how many vehicles a campaign might cover.
+// campaignNumber does, as one figure for the whole campaign (every model row
+// repeats it). Cached so each campaign is requested once per run.
+const campaignCache = new Map();
+function campaignInfo(num) {
+  if (!campaignCache.has(num)) campaignCache.set(num, loadCampaign(num));
+  return campaignCache.get(num);
+}
+async function loadCampaign(num) {
+  const url = `https://api.nhtsa.gov/recalls/campaignNumber?campaignNumber=${encodeURIComponent(num)}`;
+  const empty = {
+    has_potential_units: false,
+    potential_units: null,
+    potential_units_source_url: null,
+    potential_units_source_title: null,
+    campaign_vehicle_count: null,
+    campaign_vehicles: [],
+    campaign_vehicles_truncated: false,
+  };
+  let data;
+  try { data = await getJson(url); } catch (e) { console.error(`✗ campaign ${num}: ${e.message}`); return empty; }
+  const rows = data?.results || [];
+  if (!rows.length) return empty;
+  const units = [...new Set(rows.map((r) => r.PotentialNumberofUnitsAffected).filter((v) => v !== undefined && v !== null && v !== "").map(Number))].filter((n) => Number.isFinite(n));
+  const seen = new Set();
+  const vehicles = [];
+  for (const r of rows) {
+    const key = `${r.ModelYear}|${r.Make}|${r.Model}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    vehicles.push({ year: String(r.ModelYear ?? ""), make: String(r.Make ?? ""), model: String(r.Model ?? "") });
+  }
+  return {
+    has_potential_units: units.length === 1,
+    potential_units: units.length === 1 ? units[0] : null,
+    potential_units_source_url: url,
+    potential_units_source_title: "NHTSA Recalls API (campaignNumber)",
+    campaign_vehicle_count: vehicles.length,
+    campaign_vehicles: vehicles.slice(0, 24),
+    campaign_vehicles_truncated: vehicles.length > 24,
+  };
+}
+
 async function run(job) {
   const q = `make=${encodeURIComponent(job.nhtsa_make)}&model=${encodeURIComponent(job.nhtsa_model)}&modelYear=${job.year}`;
   const complaintsUrl = `https://api.nhtsa.gov/complaints/complaintsByVehicle?${q}`;
@@ -79,6 +122,9 @@ async function run(job) {
     park_outside: !!x.parkOutSide,
     over_the_air: !!x.overTheAirUpdate,
   }));
+  const infos = new Map();
+  for (const num of new Set(recalls.map((r) => r.campaign).filter(Boolean))) infos.set(num, await campaignInfo(num));
+  for (const r of recalls) Object.assign(r, infos.get(r.campaign) || {});
   const out = {
     make: job.make,
     model: job.model,

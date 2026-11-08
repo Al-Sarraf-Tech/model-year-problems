@@ -13,7 +13,7 @@ permalink: /about/
 <li><strong>Complaints</strong>: <code>https://api.nhtsa.gov/complaints/complaintsByVehicle?make=…&amp;model=…&amp;modelYear=…</code></li>
 <li><strong>Recalls</strong>: <code>https://api.nhtsa.gov/recalls/recallsByVehicle?make=…&amp;model=…&amp;modelYear=…</code></li>
 </ul>
-<p>A script (<code>scripts/fetch-nhtsa.mjs</code> in the <a href="{{ site.repo }}">public repository</a>) calls both APIs for each model year, saves the answers as JSON in the repository, and the site is built only from those saved files. Each page links the exact API URLs it was built from and shows the date they were checked. Last full refresh: {{ nhtsa.checked | prettyDate }}.</p>
+<p>A script (<code>scripts/fetch-nhtsa.mjs</code> in the <a href="{{ site.repo }}">public repository</a>) calls both APIs for each model year, saves the answers as JSON in the repository, and the site is built only from those saved files. For a recall that shows a potential unit count, the same script also calls <code>https://api.nhtsa.gov/recalls/campaignNumber?campaignNumber=…</code>. Each page links the exact API URLs it was built from and shows the date they were checked. The newest file in the cache was checked {{ nhtsa.checked | prettyDate }}. A page can show an older date when that model was not in the latest fetch.</p>
 
 <h2>How the numbers are counted</h2>
 <ul>
@@ -21,8 +21,9 @@ permalink: /about/
 <li><strong>Component groups</strong> are NHTSA's own labels, chosen by the person filing. A complaint can name several, so a page's shares add up to more than 100%. We rejoin labels that contain a comma (for example "Service brakes, hydraulic") and fold child-car-seat parts into one "Child seat" group. The one-line descriptions under each label are ours.</li>
 <li><strong>Crash, fire, injuries, deaths</strong> are the flags and counts on the complaint records, added up. They are what owners reported, not NHTSA findings.</li>
 <li><strong>Recalls</strong> are the campaigns NHTSA's recall API returns for that model year. The summary, risk and remedy text on each recall is NHTSA's own wording, shown unchanged and labelled as such.</li>
-<li><strong>Rankings</strong> ("worst year", "2nd-most complaints") compare model years of the same model, 2010–2020, by raw complaint count.</li>
-<li><strong>Possible gaps</strong>: if the API returns no complaints for a year that has recalls, or under 10% of both neighbouring years, the year is highlighted as a likely gap in the API's answer and left out of rankings.{% for m in nhtsa.models %}{% for y in m.years %}{% if y.suspectGap %} Flagged now: {{ y.year }} {{ m.name }} ({{ y.s.total | n }} complaints returned, {{ y.s.recalls.length }} recalls).{% endif %}{% endfor %}{% endfor %}</li>
+<li><strong>Complaint-count order</strong> compares model years of the same model, 2010–2020, by the number of owner complaints. It is not a reliability or safety ranking, and it is not adjusted for sales or age. This site does not publish a best-year or worst-year list.</li>
+<li><strong>Component pages</strong> follow one NHTSA component group across the model years of one model. They are published only when that group is the one owners named most often in several years and the page can show the matching recall notices separately from the complaint counts. See <code>NIGHTLY.md</code> in the repository for the evidence bar.</li>
+<li><strong>Possible gaps</strong>: if the API returns no complaints for a year that has recalls, or under 10% of both neighbouring years, the year is highlighted as a likely gap in the API's answer and left out of the complaint-count order.{% for m in nhtsa.models %}{% for y in m.years %}{% if y.suspectGap %} Flagged now: {{ y.year }} {{ m.name }} ({{ y.s.total | n }} complaints returned, {{ y.s.recalls.length }} recalls).{% endif %}{% endfor %}{% endfor %}</li>
 </ul>
 
 <h2>What the numbers can't tell you</h2>
@@ -41,4 +42,4 @@ permalink: /about/
 </ul>
 
 <h2>Which models are covered</h2>
-<p>We started with best-selling Honda, Toyota, Ford, Chevrolet and Nissan models, model years 2010–2020. Every model has a page comparing all its years. Full model-year pages start with the year each model has the most complaints, then the next-worst years; one more page is added most nights. Corrections: <a href="mailto:{{ site.contact }}">{{ site.contact }}</a>.</p>
+<p>We started with best-selling Honda, Toyota, Ford, Chevrolet and Nissan models, model years 2010–2020. Every model has a page comparing all its years. Full model-year pages start with the year each model has the most complaints, then further high-count years; one more page is added most nights. Corrections: <a href="mailto:{{ site.contact }}">{{ site.contact }}</a>.</p>

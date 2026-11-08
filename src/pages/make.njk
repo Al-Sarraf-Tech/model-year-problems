@@ -18,7 +18,7 @@
 {% for m in mk.models %}{%- set w = m.rankable[0] -%}{%- set b = m.rankable | last -%}<tr><td><a href="{{ m.url }}">{{ m.model }}</a></td><td class="num">{{ m.totalComplaints | n }}</td><td class="num">{{ m.totalRecalls }}</td><td>{% if w.featured %}<a href="{{ m.url }}{{ w.year }}/">{{ w.year }}</a>{% else %}{{ w.year }}{% endif %} ({{ w.s.total | n }})</td><td>{{ b.year }} ({{ b.s.total | n }})</td></tr>
 {% endfor %}
 </tbody></table></div>
-<p class="muted">Totals add every model year 2010–2020 that NHTSA has records for. Bigger sellers collect more complaints, so compare years within a model before comparing models.</p>
+<p class="muted">Totals add every model year 2010–2020 that NHTSA has records for. Bigger sellers collect more complaints, so compare years within a model before comparing models. Most and fewest are raw complaint counts, not a reliability or safety ranking.</p>
 <h2>Model-year pages</h2>
 <ul class="cards">
 {% for m in mk.models %}{% for y in m.years %}{% if y.featured %}<li><a href="{{ m.url }}{{ y.year }}/"><strong>{{ y.year }} {{ m.make }} {{ m.model }}</strong><span>{{ y.s.total | n }} complaints · {{ y.s.recalls.length }} recalls · top: {{ y.s.named[0].label | lower }}</span></a></li>{% endif %}{% endfor %}{% endfor %}

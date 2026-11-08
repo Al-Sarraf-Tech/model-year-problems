@@ -1,5 +1,6 @@
 ---
 layout: layouts/base.njk
+title: Car problems by model year, from NHTSA complaints and recalls
 ---
 {%- set top = nhtsa.modelYears | sort(true, false, "s.total") -%}
 <section class="hero">
@@ -16,12 +17,20 @@ layout: layouts/base.njk
 {% for y in top | batch(12) | first %}<tr><td><a href="{{ y.url }}">{{ y.name }}</a></td><td class="num">{{ y.s.total | n }}</td><td class="num">{{ y.s.recalls.length }}</td><td>{{ y.s.named[0].label }}</td></tr>
 {% endfor %}
 </tbody></table></div>
-<p class="muted">Raw counts from NHTSA, checked {{ nhtsa.checked | prettyDate }}. Popular cars collect more complaints simply because more were sold; compare years within one model first.</p>
+<p class="muted">Raw counts from NHTSA, checked {{ nhtsa.checked | prettyDate }}. Popular cars collect more complaints simply because more were sold. This list is not a reliability or safety ranking. Compare years within one model first.</p>
+
+{% if nhtsa.topics.length %}
+<h2>One component across model years</h2>
+<p class="muted">These pages follow a single NHTSA component group for one model. Owner complaints and recall campaigns are counted separately. A complaint count is not the number of vehicles in a recall.</p>
+<ul class="cards">
+{% for t in nhtsa.topics %}<li><a href="{{ t.url }}"><strong>{{ t.name }} {{ t.labelLower }}</strong><span>{{ t.complaintNaming | n }} complaints name this group · {{ t.recalls.length }} matching recall campaigns · checked {{ t.checked | prettyDate }}</span></a></li>{% endfor %}
+</ul>
+{% endif %}
 
 <h2>Models</h2>
 <div class="brands">
 {% for mk in nhtsa.makes %}<div class="brand-card"><h3><a href="{{ mk.url }}">{{ mk.make }}</a></h3>
-<p class="models-line">{% for m in mk.models %}<a href="{{ m.url }}">{{ m.model }}</a> <span class="muted">(worst: {{ m.rankable[0].year }})</span>{% if not loop.last %} · {% endif %}{% endfor %}</p></div>
+<p class="models-line">{% for m in mk.models %}<a href="{{ m.url }}">{{ m.model }}</a> <span class="muted">(most complaints: {{ m.rankable[0].year }})</span>{% if not loop.last %} · {% endif %}{% endfor %}</p></div>
 {% endfor %}
 </div>
 

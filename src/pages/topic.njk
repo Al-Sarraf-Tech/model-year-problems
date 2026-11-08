@@ -1,0 +1,96 @@
+---js
+{
+  layout: "layouts/base.njk",
+  ogType: "article",
+  pagination: { data: "nhtsa.topics", size: 1, alias: "topic", addAllPagesToCollections: true },
+  permalink: (data) => data.topic.url,
+  eleventyComputed: {
+    title: (data) => data.topic.title,
+    description: (data) => data.topic.description,
+    faqs: (data) => data.topic.faqs,
+    crumbs: (data) => [
+      { name: "Home", url: "/" },
+      { name: data.topic.m.make, url: `/${data.topic.m.makeSlug}/` },
+      { name: data.topic.m.model, url: data.topic.m.url },
+      { name: data.topic.label },
+    ],
+  },
+}
+---
+<p class="kicker"><a href="{{ topic.m.url }}">{{ topic.m.make }} {{ topic.m.model }}</a> · {{ topic.label }}</p>
+<h1>{{ topic.title }}</h1>
+<p class="last-checked">NHTSA data checked {{ topic.checked | prettyDate }}{% if topic.checkedOldest != topic.checked %} (oldest file in this set {{ topic.checkedOldest | prettyDate }}){% endif %} · counts are computed from NHTSA's public APIs, not estimated</p>
+
+<section class="quick" aria-labelledby="sum">
+<h2 id="sum">Summary</h2>
+{% for line in topic.summary %}<p>{{ line }}</p>
+{% endfor %}
+</section>
+
+<div class="stats" role="list">
+  <div class="stat" role="listitem"><b>{{ topic.complaintNaming | n }}</b><span>complaints naming {{ topic.labelLower }}</span></div>
+  <div class="stat" role="listitem"><b>{{ topic.totalComplaints | n }}</b><span>complaints, all components</span></div>
+  <div class="stat" role="listitem"><b>{{ topic.recalls.length }}</b><span>{{ topic.labelLower }} recall campaign{% if topic.recalls.length != 1 %}s{% endif %}</span></div>
+</div>
+
+<h2 id="years">{{ topic.label }} complaints by model year</h2>
+<p class="muted">Each row is one model year. "Complaints naming {{ topic.labelLower }}" counts owner reports that include this NHTSA group. Share is the percent of that year's complaints. Recalls in the last column are campaigns whose component is {{ topic.labelLower }}, returned for that model year. Other recalls for the year are on the model-year page.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Model year</th><th class="num">Complaints naming {{ topic.labelLower }}</th><th class="num">Share of that year</th><th class="num">All complaints</th><th>{{ topic.label }} recalls returned</th></tr></thead>
+<tbody>
+{% for y in topic.years %}<tr{% if y.suspectGap %} class="flag"{% endif %}><td>{% if y.featured %}<a href="/{{ topic.m.makeSlug }}/{{ topic.m.modelSlug }}/{{ y.year }}/">{{ y.year }}</a>{% else %}{{ y.year }}{% endif %}{% if y.noRecords %} — no NHTSA records{% elif y.suspectGap %} — NHTSA's API count looks incomplete{% endif %}</td><td class="num">{{ y.comp.count | n }}</td><td class="num">{% if y.noRecords %}—{% else %}{{ y.comp.share }}%{% endif %}</td><td class="num">{{ y.s.total | n }}</td><td>{% if y.matchingRecalls.length %}{% for r in y.matchingRecalls %}<a href="#r-{{ r.campaign }}">{{ r.campaign }}</a>{% if not loop.last %}, {% endif %}{% endfor %}{% else %}None{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="muted">Linked years have a full page. Years without a link are still counted here. Highlighted rows, if any, look like gaps in the API and are left out of the totals above.</p>
+
+<h2 id="recalls">{{ topic.label }} recalls ({{ topic.recalls.length }})</h2>
+{% if topic.recalls.length %}
+<p class="muted">Newest first. Summary, risk and remedy are NHTSA's own recall text, shown as published. A campaign applies only to the vehicles its notice names. The model rows and potential-units figure come from NHTSA's campaignNumber API and can include other models. None of these numbers is a complaint count. Your VIN lookup is the final word.</p>
+{% for r in topic.recalls %}
+<article class="recall" id="r-{{ r.campaign }}">
+<h3>NHTSA campaign {{ r.campaign }}{% if r.park_it %}<span class="tag">Park it</span>{% endif %}{% if r.park_outside %}<span class="tag">Park outside</span>{% endif %}</h3>
+<p class="muted">Received {{ r.received | prettyDate }} · {{ r.component | comp }}{% if r.component | subcomp %} ({{ r.component | subcomp }}){% endif %}{% if r.over_the_air %} · fix can be sent over the air{% endif %}</p>
+<p class="muted">recallsByVehicle returned this campaign for {{ topic.name }} model year{% if r.years.length != 1 %}s{% endif %} {{ r.years | join(", ") }}.</p>
+{% if r.campaign_vehicle_count %}
+<p>The <a href="{{ r.potential_units_source_url }}" rel="nofollow noopener">campaignNumber</a> response names {{ r.campaign_vehicle_count }} model row{% if r.campaign_vehicle_count != 1 %}s{% endif %}{% if r.campaign_vehicles.length %}: {% for v in r.campaign_vehicles %}{{ v.year }} {{ v.make }} {{ v.model }}{% if not loop.last %}; {% endif %}{% endfor %}{% if r.campaign_vehicles_truncated %} (first {{ r.campaign_vehicles.length }} of {{ r.campaign_vehicle_count }} shown){% endif %}.{% else %}.{% endif %}</p>
+{% endif %}
+{% if r.has_potential_units %}
+<p><strong>{{ r.potential_units | n }}</strong> is NHTSA's potential number of units affected for campaign {{ r.campaign }} as a whole. {% if r.sameModelCampaign %}It covers the {{ topic.name }} model rows listed above. It is not a complaint count, and it does not mean every {{ topic.name }} is included.{% else %}It covers every model row in the campaign, including other models when they are listed. It is not a complaint count, and it is not a {{ topic.name }} count.{% endif %}</p>
+{% endif %}
+<p><strong>What's wrong:</strong> {{ r.summary }}</p>
+{% if r.consequence %}<p><strong>Risk:</strong> {{ r.consequence }}</p>{% endif %}
+{% if r.remedy %}<p><strong>Remedy:</strong> {{ r.remedy }}</p>{% endif %}
+<p class="muted">Check whether a specific car is included at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>.</p>
+</article>
+{% endfor %}
+{% else %}
+<p>The recalls API returned no campaign whose component is {{ topic.labelLower }} for these model years, as of {{ topic.checked | prettyDate }}. That does not mean a car has no open recall. Check the VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>.</p>
+{% endif %}
+
+<p><a href="{{ topic.m.url }}">All {{ topic.name }} years compared →</a></p>
+
+{% include "partials/faq.njk" %}
+
+<section class="how">
+<h2 id="read">How to read these numbers</h2>
+<ul>
+<li>Complaints are reports owners file with NHTSA. NHTSA does not confirm each one, and the component group is the owner's label.</li>
+<li>A raw complaint count is not a reliability or safety ranking. It is not divided by sales, and older model years have had more time to collect reports.</li>
+<li>A recall is a different record from a complaint. The vehicles it covers are the ones named in the notice, which can be a subset of a model year and can include other models.</li>
+<li>NHTSA's potential-units figure, when the campaignNumber API provides one, is for that campaign as a whole. It is not the complaint count on this page.</li>
+<li>Open recall status for a specific car has to be checked by VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>.</li>
+</ul>
+</section>
+
+<section class="sources" aria-labelledby="src">
+<h2 id="src">Sources</h2>
+<ol>
+{% for y in topic.years %}
+<li>{{ y.year }} {{ topic.name }}: <a href="{{ y.rec.complaints_source_url }}" rel="nofollow noopener">complaintsByVehicle</a> · <a href="{{ y.rec.recalls_source_url }}" rel="nofollow noopener">recallsByVehicle</a> <span class="checked">checked {{ y.rec.checked }}</span></li>
+{% endfor %}
+{% for r in topic.recalls %}{% if r.potential_units_source_url %}
+<li>Campaign {{ r.campaign }}: <a href="{{ r.potential_units_source_url }}" rel="nofollow noopener">{{ r.potential_units_source_title }}</a> <span class="checked">checked {{ topic.checked }}</span></li>
+{% endif %}{% endfor %}
+<li><a href="https://www.nhtsa.gov/nhtsa-datasets-and-apis" rel="nofollow noopener">NHTSA: Datasets and APIs</a> (what the APIs contain)</li>
+</ol>
+</section>

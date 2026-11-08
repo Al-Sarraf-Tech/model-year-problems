@@ -10,6 +10,8 @@ Not affiliated with NHTSA, the U.S. Department of Transportation, or any automak
 - `scripts/fetch-nhtsa.mjs`: calls `api.nhtsa.gov` complaints + recalls for each model-year and writes
   `data/nhtsa/<make>-<model>-<year>.json` (committed). Complaint narratives are not stored.
 - `src/lib/data.js`: turns the cache into page data. Every number on the site is computed here.
+  `component_topics` in `vehicles.yaml` adds a cross-year page for one NHTSA component group.
+  The evidence bar for those pages is in `NIGHTLY.md`.
 - Build gates: `scripts/check-data.mjs` (each cache has NHTSA source URLs, a checked date and row counts
   matching NHTSA's count) and `scripts/check-output.mjs` (links, JSON-LD, not-affiliated note, no affiliate links).
 

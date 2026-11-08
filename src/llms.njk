@@ -6,7 +6,12 @@ eleventyExcludeFromCollections: true
 
 > {{ site.tagline | safe }}. {{ site.description | safe }}
 
-All counts are computed from NHTSA's public Complaints API and Recalls API (api.nhtsa.gov) and saved with the date checked. Complaints are unverified owner reports and are not adjusted for sales volume. The site is not affiliated with NHTSA or any automaker. No ratings, no reviews, no affiliate links (`affiliates_enabled` is {{ site.affiliates_enabled | safe }}). AI crawlers are welcome; see {{ site.url | safe }}/robots.txt. Data last refreshed {{ nhtsa.checked | safe }}.
+All counts are computed from NHTSA's public Complaints API (complaintsByVehicle), Recalls API (recallsByVehicle), and, where a recall shows a potential unit count, the Recalls API campaignNumber endpoint (api.nhtsa.gov). Files are saved with the date checked. Complaints are unverified owner reports. They are not adjusted for sales or vehicle age, and they are not a reliability or safety ranking. A recall applies only to the vehicles named in its notice. A potential-units figure is for the whole campaign and can include other models. VIN recall status has to be checked at https://www.nhtsa.gov/recalls. The site is not affiliated with NHTSA or any automaker. No ratings, no reviews, no affiliate links (`affiliates_enabled` is {{ site.affiliates_enabled | safe }}). AI crawlers are welcome; see {{ site.url | safe }}/robots.txt. Newest cache date {{ nhtsa.checked | safe }}.
+
+## Component pages
+{% for t in nhtsa.topics %}
+- [{{ t.title | safe }}]({{ site.url | safe }}{{ t.url | safe }}): {{ t.complaintNaming | safe }} complaints name {{ t.label | safe }}; {{ t.recalls.length | safe }} matching recall campaigns. Checked {{ t.checked | safe }}.
+{%- endfor %}
 
 ## Model-year pages
 {% for y in nhtsa.modelYears %}
