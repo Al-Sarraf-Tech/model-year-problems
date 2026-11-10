@@ -28,6 +28,9 @@ extra_pages:
   - ford/fusion/2015
   - ford/focus/2015
   - chevrolet/malibu/2011
+  - nissan/altima/2015
+  - chevrolet/malibu/2013
+  - chevrolet/malibu/2012
 component_topics:
   - { make: Ford, model: Focus, component: POWER TRAIN, slug: power-train }
   - { make: Ford, model: Fusion, component: STEERING, slug: steering }
