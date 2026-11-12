@@ -15,8 +15,15 @@
       return [
         { q: `Which ${h.name} model year has the most owner complaints?`, a: `${w.year}, with ${fmt(w.s.total)} complaints in NHTSA's data (owners name ${w.s.named[0]?.label.toLowerCase()} most often). That is a raw count among model years ${h.range}. It is not adjusted for sales or age, and it is not a reliability or safety ranking.` },
         { q: `Which ${h.name} year has the fewest complaints?`, a: `${b.year}, with ${fmt(b.s.total)} complaints among model years ${h.range} that are not flagged as API gaps. Fewer complaints is not a reliability or safety ranking.` },
+        { q: `Which ${h.name} years should I avoid?`, a: `This site does not publish an avoid list. NHTSA does not rate reliability, and complaint counts are not adjusted for how many cars were sold or how old they are. What the data does show: the raw complaint count is highest for ${w.year} (${fmt(w.s.total)}) and lowest for ${b.year} (${fmt(b.s.total)}), and ${byRecalls.year} has the most recall campaigns (${byRecalls.s.recalls.length}). The table above lists every year. For a specific car, check its VIN at nhtsa.gov/recalls and have it inspected.` },
+        (() => {
+          const tally = new Map();
+          for (const y of h.years) for (const c of (y.s.named || [])) tally.set(c.label, (tally.get(c.label) || 0) + c.count);
+          const top = [...tally.entries()].sort((x, y) => y[1] - x[1]).slice(0, 3);
+          return top.length ? { q: `What are the most common problems with the ${h.name}?`, a: `Across model years ${h.range}, owners most often name ${top.map(([l, n]) => `${l.toLowerCase()} (${fmt(n)})`).join(", ")} in NHTSA complaints. A complaint can name more than one component, so counts overlap, and they are unverified owner allegations rather than confirmed defects. The table above shows each year's most-named component.` } : null;
+        })(),
         { q: `Which ${h.name} year has the most recalls?`, a: `${byRecalls.year}, with ${byRecalls.s.recalls.length} recall campaigns in NHTSA's recall database. A campaign may cover only some vehicles of that model year. Check a VIN at nhtsa.gov/recalls.` },
-      ];
+      ].filter(Boolean);
     },
     crumbs: (data) => [{ name: "Home", url: "/" }, { name: data.hub.make, url: `/${data.hub.makeSlug}/` }, { name: data.hub.model }],
   },

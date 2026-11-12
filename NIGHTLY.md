@@ -7,7 +7,8 @@ no copied text from other car-problem sites, no complaint narratives, no reviews
 ## Steps (about 10 minutes)
 
 1. `npm ci` (first run only).
-2. Take the **first unchecked item** in the backlog below.
+2. Take the **first unchecked item** in the Priority queue, then in the model-year backlog below. A queue item that says
+   "Component topic" is added under `component_topics` in `vehicles.yaml` (see "Component topics") instead of `extra_pages`.
    - A model-year item `make/model/year`: refresh its model's cache, then add it to `extra_pages`:
      ```sh
      npm run fetch -- make-model            # e.g. npm run fetch -- ford-escape  (all 11 years, ~20 s)
@@ -33,7 +34,33 @@ no copied text from other car-problem sites, no complaint narratives, no reviews
 - `affiliates_enabled` stays `false` until Jamal approves a program.
 - Not affiliated with NHTSA or any automaker: the footer note must stay on every page (build checks it).
 
-## Backlog: model-year pages (highest complaint counts first)
+## Priority queue (search-demand review, 2026-11-12) — take these first, in order
+Why this order: Google's autosuggest for "{year} {make} {model} problems" shows the broadest follow-on
+searches ("problems and recalls", "common problems", "transmission/engine problems", "reddit") for the
+Chevrolet Equinox, Cruze, Honda Accord/CR-V, Toyota Camry/RAV4 and Silverado 2020. Reddit buyer threads
+also keep asking about the 2014 Explorer (steering, transmission) and the 2.4L Equinox (oil use). The pages
+state NHTSA counts only; never claim a defect cause the NHTSA record does not name.
+- [ ] `chevrolet/equinox/2011` (783 complaints; engine is the most-named group)
+- [ ] `chevrolet/equinox/2013` (751; engine)
+- [ ] `chevrolet/equinox/2012` (685; engine)
+- [ ] Component topic: Chevrolet Equinox **engine**, `/chevrolet/equinox/engine/`. In the 2026-11-08 cache engine is the most-named
+  group in 2010–2014 and 2016–2017 with at least 250 complaints in 2010–2013 (271, 386, 355, 412), so it meets bar item 1; re-check after
+  fetching. Follow "Component topics" below to the letter, including the campaignNumber lookups. Do not call it an oil-consumption page
+  unless NHTSA's own recall or complaint-component text for a matched campaign says so.
+- [ ] Component topic: Ford Explorer **steering**, `/ford/explorer/steering/`. Steering is the most-named group in 2011–2014 (743, 361, 837, 500
+  in the 2026-11-08 cache) with 2015 and 2016 close behind. Re-fetch Explorer first and state which years have no steering campaign.
+- [ ] `honda/accord/2019` (698; engine)
+- [ ] `honda/cr-v/2015` (673; engine)
+- [ ] `toyota/camry/2012` (645; power train)
+- [ ] `toyota/rav4/2020` (639; engine)
+- [ ] `chevrolet/cruze/2011` (733; engine)
+- [ ] `chevrolet/cruze/2014` (703; engine)
+- [ ] `chevrolet/silverado-1500/2020` (749)
+- [ ] `ford/explorer/2018` (733; structure)
+- [ ] `chevrolet/malibu/2017`
+- [ ] `chevrolet/malibu/2018`
+
+## Backlog: model-year pages (highest complaint counts first; the items moved to the priority queue are removed here)
 - [x] `ford/escape/2014` (2014 Ford Escape: 2,089 complaints, 16 recalls on 2026-10-31)
 - [x] `ford/fusion/2013` (2013 Ford Fusion: 1,957 complaints, 19 recalls on 2026-10-31)
 - [x] `ford/escape/2018` (2018 Ford Escape: 1,822 complaints, 4 recalls on 2026-10-31)
@@ -62,21 +89,8 @@ no copied text from other car-problem sites, no complaint narratives, no reviews
 - [x] `ford/focus/2018` (2018 Ford Focus: 839 complaints, 7 recalls on 2026-11-11)
 - [x] `ford/explorer/2012` (2012 Ford Explorer: 831 complaints, 7 recalls on 2026-11-11)
 - [x] `chevrolet/silverado-1500/2016` (2016 Chevrolet Silverado 1500: 801 complaints, 12 recalls on 2026-11-11)
-- [ ] `chevrolet/equinox/2011` (2011 Chevrolet Equinox: 782 complaints, 3 recalls on 2026-10-31)
-- [ ] `chevrolet/equinox/2013` (2013 Chevrolet Equinox: 751 complaints, 2 recalls on 2026-10-31)
-- [ ] `chevrolet/silverado-1500/2020` (2020 Chevrolet Silverado 1500: 749 complaints, 12 recalls on 2026-10-31)
-- [ ] `ford/explorer/2018` (2018 Ford Explorer: 733 complaints, 7 recalls on 2026-10-31)
-- [ ] `chevrolet/cruze/2011` (2011 Chevrolet Cruze: 733 complaints, 7 recalls on 2026-10-31)
-- [ ] `chevrolet/malibu/2017` (2017 Chevrolet Malibu: 727 complaints, 4 recalls on 2026-10-31)
-- [ ] `chevrolet/cruze/2014` (2014 Chevrolet Cruze: 703 complaints, 10 recalls on 2026-10-31)
-- [ ] `chevrolet/malibu/2018` (2018 Chevrolet Malibu: 700 complaints, 6 recalls on 2026-10-31)
-- [ ] `honda/accord/2019` (2019 Honda Accord: 698 complaints, 6 recalls on 2026-10-31)
-- [ ] `chevrolet/equinox/2012` (2012 Chevrolet Equinox: 685 complaints, 3 recalls on 2026-10-31)
 - [ ] `chevrolet/equinox/2015` (2015 Chevrolet Equinox: 680 complaints, 2 recalls on 2026-10-31)
-- [ ] `honda/cr-v/2015` (2015 Honda CR-V: 673 complaints, 3 recalls on 2026-10-31)
-- [ ] `toyota/camry/2012` (2012 Toyota Camry: 645 complaints, 2 recalls on 2026-10-31)
 - [ ] `chevrolet/silverado-1500/2011` (2011 Chevrolet Silverado 1500: 640 complaints, 4 recalls on 2026-10-31)
-- [ ] `toyota/rav4/2020` (2020 Toyota RAV4: 639 complaints, 6 recalls on 2026-10-31)
 - [ ] `toyota/camry/2011` (2011 Toyota Camry: 625 complaints, 5 recalls on 2026-10-31)
 - [ ] `toyota/camry/2010` (2010 Toyota Camry: 614 complaints, 9 recalls on 2026-10-31)
 
@@ -152,3 +166,11 @@ Do not publish:
   America's best-selling truck. Find the spelling NHTSA uses for F-150 complaints before adding it.
 - Toyota Camry 2014: complaints API returned 14 (2013: 301, 2015: 271). Flagged on the site as a likely gap.
 - Chevrolet Silverado 1500 2010: complaints API returned 0 but 3 recalls. Flagged as a likely gap.
+
+## Done outside the backlog
+- 2026-11-12: authorized search-impressions batch (not a nightly page). Model-year pages gained computed FAQ answers: most common
+  problems, recall for the top component group, listed recall campaigns, "is it reliable". Model pages gained "years should I avoid"
+  (no avoid list; raw counts and caveats only) and "most common problems" answers. IndexNow added (key file at the site root, ping step in the
+  Pages workflow). Sitemap `lastmod` for model-year and model pages follows the later of the data-checked date and
+  `model_year_content_updated` in `src/_data/site.json`; bump that date only when the template content changes.
+
