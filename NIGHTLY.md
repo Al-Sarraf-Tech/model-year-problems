@@ -40,9 +40,9 @@ searches ("problems and recalls", "common problems", "transmission/engine proble
 Chevrolet Equinox, Cruze, Honda Accord/CR-V, Toyota Camry/RAV4 and Silverado 2020. Reddit buyer threads
 also keep asking about the 2014 Explorer (steering, transmission) and the 2.4L Equinox (oil use). The pages
 state NHTSA counts only; never claim a defect cause the NHTSA record does not name.
-- [ ] `chevrolet/equinox/2011` (783 complaints; engine is the most-named group)
-- [ ] `chevrolet/equinox/2013` (751; engine)
-- [ ] `chevrolet/equinox/2012` (685; engine)
+- [x] `chevrolet/equinox/2011` (2026-11-12: 783 complaints, 3 recalls; engine most named)
+- [x] `chevrolet/equinox/2013` (2026-11-12: 751 complaints, 2 recalls; engine most named)
+- [x] `chevrolet/equinox/2012` (2026-11-12: 685 complaints, 3 recalls; engine most named)
 - [ ] Component topic: Chevrolet Equinox **engine**, `/chevrolet/equinox/engine/`. In the 2026-11-08 cache engine is the most-named
   group in 2010–2014 and 2016–2017 with at least 250 complaints in 2010–2013 (271, 386, 355, 412), so it meets bar item 1; re-check after
   fetching. Follow "Component topics" below to the letter, including the campaignNumber lookups. Do not call it an oil-consumption page
