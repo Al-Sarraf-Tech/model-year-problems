@@ -43,13 +43,13 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] `chevrolet/equinox/2011` (2026-11-12: 783 complaints, 3 recalls; engine most named)
 - [x] `chevrolet/equinox/2013` (2026-11-12: 751 complaints, 2 recalls; engine most named)
 - [x] `chevrolet/equinox/2012` (2026-11-12: 685 complaints, 3 recalls; engine most named)
-- [ ] Component topic: Chevrolet Equinox **engine**, `/chevrolet/equinox/engine/`. In the 2026-11-08 cache engine is the most-named
+- [x] (2026-11-13: published; engine most named in 2010–2014, 2016–2017, 2019; 2,536 of 5,951 complaints; 0 ENGINE campaigns returned) Component topic: Chevrolet Equinox **engine**, `/chevrolet/equinox/engine/`. In the 2026-11-08 cache engine is the most-named
   group in 2010–2014 and 2016–2017 with at least 250 complaints in 2010–2013 (271, 386, 355, 412), so it meets bar item 1; re-check after
   fetching. Follow "Component topics" below to the letter, including the campaignNumber lookups. Do not call it an oil-consumption page
   unless NHTSA's own recall or complaint-component text for a matched campaign says so.
-- [ ] Component topic: Ford Explorer **steering**, `/ford/explorer/steering/`. Steering is the most-named group in 2011–2014 (743, 361, 837, 500
+- [x] (2026-11-13: published; steering most named in 2011–2014; 3,459 of 14,362 complaints; campaigns 14V286000, 14E001000, 17V530000; 2014–2016 no steering campaign) Component topic: Ford Explorer **steering**, `/ford/explorer/steering/`. Steering is the most-named group in 2011–2014 (743, 361, 837, 500
   in the 2026-11-08 cache) with 2015 and 2016 close behind. Re-fetch Explorer first and state which years have no steering campaign.
-- [ ] `honda/accord/2019` (698; engine)
+- [x] `honda/accord/2019` (2026-11-13: 702 complaints, 6 recalls; engine most named)
 - [ ] `honda/cr-v/2015` (673; engine)
 - [ ] `toyota/camry/2012` (645; power train)
 - [ ] `toyota/rav4/2020` (639; engine)
@@ -142,9 +142,15 @@ Published:
   steering campaigns were returned. 2010 has the highest steering count and no steering campaign.
   Campaign potential-units figures (for example 15V340000) cover every model row in the campaign,
   not Fusion complaints.
+- [x] Chevrolet Equinox engine, `/chevrolet/equinox/engine/` (fetched 2026-11-13). Engine is the most-named
+  group in 2010–2014, 2016–2017 and 2019 (271, 386, 355, 412 in 2010–2013). The recalls API returned no
+  campaign whose component is ENGINE for any 2010–2020 Equinox; the page leads with that. Not an oil-consumption page.
+- [x] Ford Explorer steering, `/ford/explorer/steering/` (fetched 2026-11-13). Steering is the most-named
+  group in 2011–2014 (744, 361, 837, 500). Steering campaigns returned: 14V286000 (2011–2013), 14E001000
+  (2011–2012), 17V530000 (2017). 2014 (top group) and 2015–2016 returned no steering campaign.
 
 Meets the count bar, not published:
-- Ford Explorer structure. In the 2026-11-06 cache, structure is the most-named group in 2015
+- Ford Explorer structure. In the 2026-11-13 cache structure is top in 2015 (412), 2016 (594), 2017 (665), 2018 (288). In the 2026-11-06 cache, structure is the most-named group in 2015
   (411), 2016 (592), 2017 (665), and 2018 (288), with body recalls whose years overlap (including
   24V031000). Re-fetch Explorer before publishing. Same rules: the roof-rail and trim notices name
   the vehicles, and the complaint count is not that population.

@@ -40,9 +40,12 @@ extra_pages:
   - chevrolet/equinox/2011
   - chevrolet/equinox/2013
   - chevrolet/equinox/2012
+  - honda/accord/2019
 component_topics:
   - { make: Ford, model: Focus, component: POWER TRAIN, slug: power-train }
   - { make: Ford, model: Fusion, component: STEERING, slug: steering }
+  - { make: Chevrolet, model: Equinox, component: ENGINE, slug: engine }
+  - { make: Ford, model: Explorer, component: STEERING, slug: steering }
 models:
   - { make: Honda, model: Accord, nhtsa_make: HONDA, nhtsa_model: ACCORD }
   - { make: Honda, model: Civic, nhtsa_make: HONDA, nhtsa_model: CIVIC }
