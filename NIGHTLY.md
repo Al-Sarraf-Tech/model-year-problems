@@ -50,9 +50,9 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] (2026-11-13: published; steering most named in 2011–2014; 3,459 of 14,362 complaints; campaigns 14V286000, 14E001000, 17V530000; 2014–2016 no steering campaign) Component topic: Ford Explorer **steering**, `/ford/explorer/steering/`. Steering is the most-named group in 2011–2014 (743, 361, 837, 500
   in the 2026-11-08 cache) with 2015 and 2016 close behind. Re-fetch Explorer first and state which years have no steering campaign.
 - [x] `honda/accord/2019` (2026-11-13: 702 complaints, 6 recalls; engine most named)
-- [ ] `honda/cr-v/2015` (673; engine)
-- [ ] `toyota/camry/2012` (645; power train)
-- [ ] `toyota/rav4/2020` (639; engine)
+- [x] `honda/cr-v/2015` (2026-11-14: 674 complaints, 3 recalls; engine most named)
+- [x] `toyota/camry/2012` (2026-11-14: 646 complaints, 2 recalls; power train most named)
+- [x] `toyota/rav4/2020` (2026-11-14: 642 complaints, 6 recalls; engine most named)
 - [ ] `chevrolet/cruze/2011` (733; engine)
 - [ ] `chevrolet/cruze/2014` (703; engine)
 - [ ] `chevrolet/silverado-1500/2020` (749)
