@@ -44,6 +44,9 @@ extra_pages:
   - honda/cr-v/2015
   - toyota/camry/2012
   - toyota/rav4/2020
+  - chevrolet/cruze/2011
+  - chevrolet/cruze/2014
+  - chevrolet/silverado-1500/2020
 component_topics:
   - { make: Ford, model: Focus, component: POWER TRAIN, slug: power-train }
   - { make: Ford, model: Fusion, component: STEERING, slug: steering }

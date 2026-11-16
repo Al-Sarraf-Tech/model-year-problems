@@ -53,9 +53,9 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] `honda/cr-v/2015` (2026-11-14: 674 complaints, 3 recalls; engine most named)
 - [x] `toyota/camry/2012` (2026-11-14: 646 complaints, 2 recalls; power train most named)
 - [x] `toyota/rav4/2020` (2026-11-14: 642 complaints, 6 recalls; engine most named)
-- [ ] `chevrolet/cruze/2011` (733; engine)
-- [ ] `chevrolet/cruze/2014` (703; engine)
-- [ ] `chevrolet/silverado-1500/2020` (749)
+- [x] `chevrolet/cruze/2011` (2026-11-15: 733 complaints, 7 recalls; engine most named)
+- [x] `chevrolet/cruze/2014` (2026-11-15: 705 complaints, 10 recalls; engine most named)
+- [x] `chevrolet/silverado-1500/2020` (2026-11-15: 755 complaints, 12 recalls; engine most named)
 - [ ] `ford/explorer/2018` (733; structure)
 - [ ] `chevrolet/malibu/2017`
 - [ ] `chevrolet/malibu/2018`
@@ -174,6 +174,7 @@ Do not publish:
 - Chevrolet Silverado 1500 2010: complaints API returned 0 but 3 recalls. Flagged as a likely gap.
 
 ## Done outside the backlog
+- 2026-11-15: weekly full refresh, `npm run fetch` 187/187 model-years (shipped with the Cruze/Silverado pages).
 - 2026-11-12: authorized search-impressions batch (not a nightly page). Model-year pages gained computed FAQ answers: most common
   problems, recall for the top component group, listed recall campaigns, "is it reliable". Model pages gained "years should I avoid"
   (no avoid list; raw counts and caveats only) and "most common problems" answers. IndexNow added (key file at the site root, ping step in the
