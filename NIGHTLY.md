@@ -56,9 +56,9 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] `chevrolet/cruze/2011` (2026-11-15: 733 complaints, 7 recalls; engine most named)
 - [x] `chevrolet/cruze/2014` (2026-11-15: 705 complaints, 10 recalls; engine most named)
 - [x] `chevrolet/silverado-1500/2020` (2026-11-15: 755 complaints, 12 recalls; engine most named)
-- [ ] `ford/explorer/2018` (733; structure)
-- [ ] `chevrolet/malibu/2017`
-- [ ] `chevrolet/malibu/2018`
+- [x] `ford/explorer/2018` (2026-11-16: 735 complaints, 7 recalls; structure most named)
+- [x] `chevrolet/malibu/2017` (2026-11-16: 727 complaints, 4 recalls; engine most named)
+- [x] `chevrolet/malibu/2018` (2026-11-16: 702 complaints, 6 recalls; engine most named)
 
 ## Backlog: model-year pages (highest complaint counts first; the items moved to the priority queue are removed here)
 - [x] `ford/escape/2014` (2014 Ford Escape: 2,089 complaints, 16 recalls on 2026-10-31)

@@ -47,6 +47,9 @@ extra_pages:
   - chevrolet/cruze/2011
   - chevrolet/cruze/2014
   - chevrolet/silverado-1500/2020
+  - ford/explorer/2018
+  - chevrolet/malibu/2017
+  - chevrolet/malibu/2018
 component_topics:
   - { make: Ford, model: Focus, component: POWER TRAIN, slug: power-train }
   - { make: Ford, model: Fusion, component: STEERING, slug: steering }
