@@ -89,10 +89,11 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] `ford/focus/2018` (2018 Ford Focus: 839 complaints, 7 recalls on 2026-11-11)
 - [x] `ford/explorer/2012` (2012 Ford Explorer: 831 complaints, 7 recalls on 2026-11-11)
 - [x] `chevrolet/silverado-1500/2016` (2016 Chevrolet Silverado 1500: 801 complaints, 12 recalls on 2026-11-11)
-- [ ] `chevrolet/equinox/2015` (2015 Chevrolet Equinox: 680 complaints, 2 recalls on 2026-10-31)
-- [ ] `chevrolet/silverado-1500/2011` (2011 Chevrolet Silverado 1500: 640 complaints, 4 recalls on 2026-10-31)
-- [ ] `toyota/camry/2011` (2011 Toyota Camry: 625 complaints, 5 recalls on 2026-10-31)
+- [x] `chevrolet/equinox/2015` (2015 Chevrolet Equinox: 680 complaints, 2 recalls on 2026-11-17; visibility/wiper most named)
+- [x] `chevrolet/silverado-1500/2011` (2011 Chevrolet Silverado 1500: 640 complaints, 4 recalls on 2026-11-17; air bags most named)
+- [x] `toyota/camry/2011` (2011 Toyota Camry: 625 complaints, 5 recalls on 2026-11-17; visibility/wiper most named, 118 unknown/other)
 - [ ] `toyota/camry/2010` (2010 Toyota Camry: 614 complaints, 9 recalls on 2026-10-31)
+- Model-year backlog is nearly empty after 2010 Camry: next nights take new models from the list below (Tacoma, Highlander, Grand Cherokee first), checking NHTSA spelling and counts before adding.
 
 ## Backlog: new models (check NHTSA spelling first)
 - [ ] Toyota Tacoma (TACOMA)
