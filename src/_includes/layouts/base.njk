@@ -57,7 +57,8 @@
 <footer class="foot">
   <div class="wrap">
     <p class="safety"><strong>Got a recall notice or a safety problem?</strong> Look up open recalls for your exact car by VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a>, and report a defect to NHTSA at 1-888-327-4236.</p>
-    <p>{{ site.name }} counts what NHTSA publishes; it is <strong>not affiliated with NHTSA, the U.S. Department of Transportation, or any automaker</strong>. Complaints are unverified owner reports. <a href="/about/">Method and sources</a> · <a href="/privacy/">Privacy</a> · <a href="/disclosure/">Disclosure</a> · <a href="/llms.txt">llms.txt</a></p>
+    {%- include "partials/affiliate-notice.njk" %}
+    <p>{{ site.name }} counts what NHTSA publishes; it is <strong>not affiliated with NHTSA, the U.S. Department of Transportation, or any automaker</strong>. Complaints are unverified owner reports. <a href="/about/">Method and sources</a> · <a href="/privacy/">Privacy</a> · <a href="/affiliate-disclosure/">Affiliate disclosure</a> · <a href="/disclosure/">Disclosure</a> · <a href="/llms.txt">llms.txt</a></p>
   </div>
 </footer>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ site.cf_beacon_token }}"}'></script>
