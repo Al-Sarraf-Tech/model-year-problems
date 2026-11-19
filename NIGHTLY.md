@@ -31,7 +31,7 @@ no copied text from other car-problem sites, no complaint narratives, no reviews
 ## Rules
 - Every number must come from `data/nhtsa/*.json` via `src/lib/data.js`. Never hand-type a count.
 - If a year is flagged as a likely API gap, don't give it a page; note it under Blocked.
-- `affiliates_enabled` stays `false` until Jamal approves a program.
+- `affiliates_enabled` is `true` in `src/_data/site.json`. The Amazon Associates tag is the `amazon_tag` value in that same file. Do not turn the flag off, do not add a second tag, and do not add another affiliate network. Do not show Amazon prices, ratings, or images. The Parts and tools block is rendered by the templates from complaint component counts. Do not hand-write links, and do not change the NHTSA cache format to store them. Do not imply a part fixes a recall. Recall repairs are free at a dealer. Do not link air bags, seat belts, or structure.
 - Not affiliated with NHTSA or any automaker: the footer note must stay on every page (build checks it).
 
 ## Priority queue (search-demand review, 2026-11-12) — take these first, in order
@@ -180,5 +180,5 @@ Do not publish:
   problems, recall for the top component group, listed recall campaigns, "is it reliable". Model pages gained "years should I avoid"
   (no avoid list; raw counts and caveats only) and "most common problems" answers. IndexNow added (key file at the site root, ping step in the
   Pages workflow). Sitemap `lastmod` for model-year and model pages follows the later of the data-checked date and
-  `model_year_content_updated` in `src/_data/site.json`; bump that date only when the template content changes.
+  `model_year_content_updated` in `src/_data/site.json`; bump that date only when the template content changes. Component-topic pages use the same date.
 

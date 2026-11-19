@@ -1,0 +1,12 @@
+{%- if site.affiliates_enabled and parts and parts.length -%}
+<section class="buy" aria-labelledby="parts">
+<h2 id="parts">Parts and tools</h2>
+<p>{{ partsIntro }} A search is not a diagnosis, and buying a part does not fix a recall. Recall repairs are free at a dealer. Check the VIN at <a href="https://www.nhtsa.gov/recalls" rel="nofollow noopener">nhtsa.gov/recalls</a> before paying for a repair.</p>
+<ul>
+{% for link in parts %}
+<li><a href="{{ link.href }}" rel="sponsored nofollow noopener" target="_blank">{{ link.text }}</a></li>
+{% endfor %}
+</ul>
+<p class="buy-note">As an Amazon Associate I earn from qualifying purchases. <a href="/affiliate-disclosure/">Affiliate disclosure</a>.</p>
+</section>
+{%- endif -%}

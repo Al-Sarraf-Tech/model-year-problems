@@ -43,6 +43,10 @@
 </tbody></table></div>
 <p class="muted">Linked years have a full page. Years without a link are still counted here. Highlighted rows, if any, look like gaps in the API and are left out of the totals above.</p>
 
+{%- set parts = topic | topicPartsLinks(site.amazon_tag) -%}
+{%- set partsIntro = "These Amazon searches follow " ~ topic.labelLower ~ " complaints for the " ~ topic.name ~ " model years with the highest counts." -%}
+{% include "partials/parts.njk" %}
+
 <h2 id="recalls">{{ topic.label }} recalls ({{ topic.recalls.length }})</h2>
 {% if topic.recalls.length %}
 <p class="muted">Newest first. Summary, risk and remedy are NHTSA's own recall text, shown as published. A campaign applies only to the vehicles its notice names. The model rows and potential-units figure come from NHTSA's campaignNumber API and can include other models. None of these numbers is a complaint count. Your VIN lookup is the final word.</p>

@@ -6,6 +6,7 @@ import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 import { absUrl, jsonld, pageSchema } from "./src/lib/schema.js";
 import { prettyDate } from "./src/lib/data.js";
 import { prettyComponent } from "./src/lib/components.js";
+import { vehiclePartsLinks, topicPartsLinks } from "./src/lib/affiliates.js";
 
 const ROOT = path.dirname(new URL(import.meta.url).pathname);
 const cssHash = crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT, "src/assets/style.css"))).digest("hex").slice(0, 8);
@@ -29,6 +30,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("n", (x) => Number(x || 0).toLocaleString("en-US"));
   eleventyConfig.addFilter("barw", (count, max) => (max ? Math.max(1, Math.round((count / max) * 100)) : 0));
   eleventyConfig.addFilter("maxOf", (arr, key) => Math.max(0, ...arr.map((x) => (key ? key.split(".").reduce((o, k) => o?.[k], x) : x) || 0)));
+  eleventyConfig.addFilter("partsLinks", (components, year, make, model, tag) => vehiclePartsLinks({ components, year, make, model, tag }));
+  eleventyConfig.addFilter("topicPartsLinks", (topic, tag) => topicPartsLinks(topic, tag));
 
   eleventyConfig.on("eleventy.after", (arg) => {
     const siteDir = typeof arg === "string" ? arg : arg.dir.output;

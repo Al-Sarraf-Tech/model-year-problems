@@ -54,6 +54,10 @@
 {% endfor %}
 </tbody></table></div>
 
+{%- set parts = s.named | partsLinks(my.year, my.m.make, my.m.model, site.amazon_tag) -%}
+{%- set partsIntro = "These Amazon searches follow component groups owners name in complaints about the " ~ my.name ~ "." -%}
+{% include "partials/parts.njk" %}
+
 <h2 id="recalls">Recalls ({{ s.recalls.length }})</h2>
 {% if s.recalls.length %}
 <p class="muted">Newest first. Summary, risk and remedy are NHTSA's own recall text (a U.S. government record), shown as published. A recall applies only to the vehicles its notice names. The complaint counts above are a separate record and are not the number of vehicles affected. Your VIN lookup is the final word.</p>

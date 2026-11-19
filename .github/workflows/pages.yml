@@ -28,7 +28,7 @@ jobs:
           cache: npm
       - run: npm ci
       # Fails the job if a cached NHTSA file lacks its source URLs or checked date,
-      # if an internal link is broken, or if an affiliate link appears.
+      # if an internal link is broken, or if an affiliate link is not an allowed Amazon search.
       - run: npm run build
         env:
           PATH_PREFIX: "/"

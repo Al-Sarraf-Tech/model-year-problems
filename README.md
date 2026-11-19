@@ -13,7 +13,7 @@ Not affiliated with NHTSA, the U.S. Department of Transportation, or any automak
   `component_topics` in `vehicles.yaml` adds a cross-year page for one NHTSA component group.
   The evidence bar for those pages is in `NIGHTLY.md`.
 - Build gates: `scripts/check-data.mjs` (each cache has NHTSA source URLs, a checked date and row counts
-  matching NHTSA's count) and `scripts/check-output.mjs` (links, JSON-LD, not-affiliated note, no affiliate links).
+  matching NHTSA's count) and `scripts/check-output.mjs` (links, JSON-LD, not-affiliated note, Amazon search links only in the allowed form).
 
 ## Commands
 ```sh
