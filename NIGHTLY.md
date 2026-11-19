@@ -92,12 +92,15 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] `chevrolet/equinox/2015` (2015 Chevrolet Equinox: 680 complaints, 2 recalls on 2026-11-17; visibility/wiper most named)
 - [x] `chevrolet/silverado-1500/2011` (2011 Chevrolet Silverado 1500: 640 complaints, 4 recalls on 2026-11-17; air bags most named)
 - [x] `toyota/camry/2011` (2011 Toyota Camry: 625 complaints, 5 recalls on 2026-11-17; visibility/wiper most named, 118 unknown/other)
-- [ ] `toyota/camry/2010` (2010 Toyota Camry: 614 complaints, 9 recalls on 2026-10-31)
-- Model-year backlog is nearly empty after 2010 Camry: next nights take new models from the list below (Tacoma, Highlander, Grand Cherokee first), checking NHTSA spelling and counts before adding.
+- [x] `toyota/camry/2010` (2010 Toyota Camry: 614 complaints, 9 recalls on 2026-11-18; vehicle speed control most named)
+- Model-year backlog is empty after 2010 Camry: next nights take new models from the list below (Grand Cherokee, Cherokee, Sonata first), checking NHTSA spelling and counts before adding.
+- Adding a new model adds its top year to the featured set and can push the lowest featured pages out of the build. On 2026-11-18
+  `honda/cr-v/2019` and `nissan/altima/2014` (already live) dropped out, so they were pinned in `extra_pages`. After adding a model,
+  compare the built page list with the live sitemap and pin any live page that would disappear.
 
 ## Backlog: new models (check NHTSA spelling first)
-- [ ] Toyota Tacoma (TACOMA)
-- [ ] Toyota Highlander (HIGHLANDER)
+- [x] Toyota Tacoma (TACOMA) (2026-11-18: page `toyota/tacoma/2016`, 325 complaints, 4 recalls; power train most named. 2010 returned 0 complaints, flagged as gap)
+- [x] Toyota Highlander (HIGHLANDER) (2026-11-18: page `toyota/highlander/2019`, 514 complaints, 3 recalls; power train most named)
 - [ ] Jeep Grand Cherokee (GRAND CHEROKEE)
 - [ ] Jeep Cherokee (CHEROKEE)
 - [ ] Hyundai Sonata (SONATA)
@@ -173,6 +176,8 @@ Do not publish:
   America's best-selling truck. Find the spelling NHTSA uses for F-150 complaints before adding it.
 - Toyota Camry 2014: complaints API returned 14 (2013: 301, 2015: 271). Flagged on the site as a likely gap.
 - Chevrolet Silverado 1500 2010: complaints API returned 0 but 3 recalls. Flagged as a likely gap.
+- Toyota Tacoma 2010: on 2026-11-18 the complaints API returned 0 for TACOMA 2010 but 13 recalls (2011: 186, 2012: 295). Flagged on the site as a likely gap; no page.
+- Toyota Camry 2014: re-checked 2026-11-18, complaints API now returns 15. Still flagged.
 
 ## Done outside the backlog
 - 2026-11-15: weekly full refresh, `npm run fetch` 187/187 model-years (shipped with the Cruze/Silverado pages).

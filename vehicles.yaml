@@ -53,6 +53,9 @@ extra_pages:
   - chevrolet/equinox/2015
   - chevrolet/silverado-1500/2011
   - toyota/camry/2011
+  - toyota/camry/2010
+  - honda/cr-v/2019
+  - nissan/altima/2014
 component_topics:
   - { make: Ford, model: Focus, component: POWER TRAIN, slug: power-train }
   - { make: Ford, model: Fusion, component: STEERING, slug: steering }
@@ -65,6 +68,8 @@ models:
   - { make: Toyota, model: Camry, nhtsa_make: TOYOTA, nhtsa_model: CAMRY }
   - { make: Toyota, model: Corolla, nhtsa_make: TOYOTA, nhtsa_model: COROLLA }
   - { make: Toyota, model: RAV4, nhtsa_make: TOYOTA, nhtsa_model: RAV4 }
+  - { make: Toyota, model: Tacoma, nhtsa_make: TOYOTA, nhtsa_model: TACOMA }
+  - { make: Toyota, model: Highlander, nhtsa_make: TOYOTA, nhtsa_model: HIGHLANDER }
   - { make: Ford, model: Escape, nhtsa_make: FORD, nhtsa_model: ESCAPE }
   - { make: Ford, model: Explorer, nhtsa_make: FORD, nhtsa_model: EXPLORER }
   - { make: Ford, model: Focus, nhtsa_make: FORD, nhtsa_model: FOCUS }
