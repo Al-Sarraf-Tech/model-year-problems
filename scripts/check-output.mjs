@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Post-build gate: internal links resolve, JSON-LD parses, every page carries the
 // not-affiliated note, search index exists, and the only affiliate links are
-// Amazon search URLs using the tag in src/_data/site.json.
+// Amazon search URLs using the tag in src/_data/site.json, plus the EpicVIN
+// homepage URL in epicvin_url on model-year pages.
 import fs from "node:fs";
 import path from "node:path";
 import * as yaml from "js-yaml";
@@ -11,6 +12,7 @@ const SITE = path.join(ROOT, "_site");
 const PREFIX = (process.env.PATH_PREFIX || "/").replace(/\/?$/, "/");
 const siteCfg = JSON.parse(fs.readFileSync(path.join(ROOT, "src/_data/site.json"), "utf8"));
 const AMAZON_TAG = String(siteCfg.amazon_tag || "");
+const EPICVIN_URL = String(siteCfg.epicvin_url || "");
 const IMPACT = '<meta name="impact-site-verification" value="f7c5a118-9b24-47ab-9555-7d703204ec87">';
 const ASSOCIATE = "As an Amazon Associate I earn from qualifying purchases.";
 const OTHER_AFF = /amzn\.to|sjv\.io|shareasale|awin1\.com|anrdoezrs|dpbolvw|jdoqocy|kqzyfj|tkqlhce|linksynergy|[?&](aff|affid|aff_id|affiliate|irclickid|clickid|ref_)=/i;
@@ -33,12 +35,18 @@ function isAllowedAmazon(href) {
   return true;
 }
 
+function isAllowedEpicvin(href) {
+  return !!EPICVIN_URL && decodeHref(href) === EPICVIN_URL;
+}
+
 const errors = [];
 const files = [];
 let partsPages = 0;
+let epicvinPages = 0;
 (function walk(d) { for (const n of fs.readdirSync(d)) { const p = path.join(d, n); fs.statSync(p).isDirectory() ? walk(p) : p.endsWith(".html") && files.push(p); } })(SITE);
 
 if (siteCfg.affiliates_enabled && !AMAZON_TAG) errors.push("affiliates_enabled is true but amazon_tag is empty");
+if (siteCfg.affiliates_enabled && !EPICVIN_URL) errors.push("affiliates_enabled is true but epicvin_url is empty");
 
 for (const f of files) {
   const html = fs.readFileSync(f, "utf8");
@@ -47,19 +55,42 @@ for (const f of files) {
   for (const m of html.matchAll(/https:\/\/www\.amazon\.com\/s\?[^"'\s<]*/g)) {
     if (isAllowedAmazon(m[0])) stripped = stripped.split(m[0]).join("");
   }
-  if (OTHER_AFF.test(stripped) || /[?&]tag=/i.test(stripped) || AMAZON_MEDIA.test(stripped)) {
-    errors.push(`${rel}: disallowed affiliate, short, or Amazon product link`);
+  for (const m of html.matchAll(/https:\/\/epicvin\.com\/?\?[^"'\s<]*/g)) {
+    if (isAllowedEpicvin(m[0])) stripped = stripped.split(m[0]).join("");
+  }
+  if (OTHER_AFF.test(stripped) || /[?&]tag=/i.test(stripped) || AMAZON_MEDIA.test(stripped) || /epicvin\.com|a_aid=/i.test(stripped)) {
+    errors.push(`${rel}: disallowed affiliate, short, Amazon product, or EpicVIN link`);
   }
   let amazon = 0;
+  let epicvin = 0;
   for (const m of html.matchAll(/<a\b[^>]*>/gi)) {
     const tag = m[0];
     const href = tag.match(/\bhref="([^"]*)"/)?.[1];
-    if (!href || !/amazon\.com/i.test(href)) continue;
+    if (!href) continue;
+    const sponsored = /\brel="sponsored nofollow noopener"/.test(tag);
+    const blank = /\btarget="_blank"/.test(tag);
+    if (/epicvin\.com/i.test(href)) {
+      epicvin++;
+      if (!isAllowedEpicvin(href)) errors.push(`${rel}: EpicVIN link is not the homepage URL ${href}`);
+      if (!sponsored) errors.push(`${rel}: EpicVIN link missing rel="sponsored nofollow noopener"`);
+      if (!blank) errors.push(`${rel}: EpicVIN link missing target="_blank"`);
+      if (/<img\b/i.test(tag)) errors.push(`${rel}: EpicVIN link is not text-only`);
+      continue;
+    }
+    if (!/amazon\.com/i.test(href)) continue;
     amazon++;
     if (!isAllowedAmazon(href)) errors.push(`${rel}: amazon link is not an allowed search ${href}`);
-    if (!/\brel="sponsored nofollow noopener"/.test(tag)) errors.push(`${rel}: amazon link missing rel="sponsored nofollow noopener"`);
-    if (!/\btarget="_blank"/.test(tag)) errors.push(`${rel}: amazon link missing target="_blank"`);
+    if (!sponsored) errors.push(`${rel}: amazon link missing rel="sponsored nofollow noopener"`);
+    if (!blank) errors.push(`${rel}: amazon link missing target="_blank"`);
   }
+  const modelYear = /^[^/]+\/[^/]+\/\d{4}\/index\.html$/.test(rel);
+  if (siteCfg.affiliates_enabled && modelYear) {
+    if (epicvin !== 1) errors.push(`${rel}: expected one EpicVIN link, found ${epicvin}`);
+    if (!html.includes("vehicle history report (EpicVIN)")) errors.push(`${rel}: missing EpicVIN history-report line`);
+  } else if (epicvin) {
+    errors.push(`${rel}: EpicVIN link is only for model-year pages`);
+  }
+  if (epicvin) epicvinPages++;
   if (amazon > 3) errors.push(`${rel}: ${amazon} Amazon links (max 3)`);
   if (amazon > 0) {
     partsPages++;
@@ -71,7 +102,7 @@ for (const f of files) {
   }
   if (siteCfg.affiliates_enabled) {
     if (!html.includes("Some links may be affiliate links.")) errors.push(`${rel}: missing affiliate notice`);
-  } else if (html.includes("Some links may be affiliate links.") || amazon) {
+  } else if (html.includes("Some links may be affiliate links.") || amazon || epicvin) {
     errors.push(`${rel}: affiliate notice or link while affiliates_enabled is false`);
   }
   if (!html.includes(IMPACT)) errors.push(`${rel}: missing Impact site verification`);
@@ -122,5 +153,8 @@ if (!/Disallow:\s*\/pagefind\//.test(robots) || !/Sitemap:\s*https:\/\/modelyear
 if (!fs.existsSync(path.join(SITE, "pagefind", "pagefind-ui.js"))) errors.push("pagefind index missing (_site/pagefind)");
 for (const f of ["robots.txt", "sitemap.xml", "llms.txt", "llms-full.txt", "CNAME"]) if (!fs.existsSync(path.join(SITE, f))) errors.push(`missing ${f}`);
 
+const disclosure = fs.readFileSync(path.join(SITE, "affiliate-disclosure/index.html"), "utf8");
+if (!disclosure.includes("EpicVIN")) errors.push("affiliate disclosure does not name EpicVIN");
+if (!/commission/i.test(disclosure)) errors.push("affiliate disclosure does not mention a commission");
 if (errors.length) { console.error(`✗ Output check failed (${errors.length}):\n  - ${errors.slice(0, 50).join("\n  - ")}`); process.exit(1); }
-console.log(`✓ Output check passed: ${files.length} HTML pages, internal links OK, JSON-LD valid, search index present, ${partsPages} pages with Parts and tools links.`);
+console.log(`✓ Output check passed: ${files.length} HTML pages, internal links OK, JSON-LD valid, search index present, ${partsPages} pages with Parts and tools links, ${epicvinPages} model-year pages with an EpicVIN link.`);

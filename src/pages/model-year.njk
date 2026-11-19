@@ -29,6 +29,9 @@
 {% if s.named.length and s.named[0].topicUrl %}
 <p>Counts for {{ s.named[0].label | lower }} on other {{ my.m.model }} years, and the recalls whose component is {{ s.named[0].label | lower }}, are on the <a href="{{ s.named[0].topicUrl }}">{{ my.m.model }} {{ s.named[0].label | lower }} page</a>.</p>
 {% endif %}
+{% if site.affiliates_enabled and site.epicvin_url %}
+<p>Shopping for a used {{ my.year }} {{ my.m.make }} {{ my.m.model }}? Run the specific car's VIN through a <a href="{{ site.epicvin_url }}" rel="sponsored nofollow noopener" target="_blank">vehicle history report (EpicVIN)</a> to check for accidents, title brands and odometer issues.</p>
+{% endif %}
 </section>
 
 <div class="stats" role="list">
