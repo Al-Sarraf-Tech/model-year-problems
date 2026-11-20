@@ -56,6 +56,9 @@ extra_pages:
   - toyota/camry/2010
   - honda/cr-v/2019
   - nissan/altima/2014
+  - chevrolet/silverado-1500/2015
+  - honda/accord/2013
+  - honda/cr-v/2017
 component_topics:
   - { make: Ford, model: Focus, component: POWER TRAIN, slug: power-train }
   - { make: Ford, model: Fusion, component: STEERING, slug: steering }
@@ -78,6 +81,8 @@ models:
   - { make: Chevrolet, model: Equinox, nhtsa_make: CHEVROLET, nhtsa_model: EQUINOX }
   - { make: Chevrolet, model: Malibu, nhtsa_make: CHEVROLET, nhtsa_model: MALIBU }
   - { make: Chevrolet, model: Cruze, nhtsa_make: CHEVROLET, nhtsa_model: CRUZE }
+  - { make: Jeep, model: Grand Cherokee, nhtsa_make: JEEP, nhtsa_model: GRAND CHEROKEE }
+  - { make: Jeep, model: Cherokee, nhtsa_make: JEEP, nhtsa_model: CHEROKEE }
   - { make: Nissan, model: Altima, nhtsa_make: NISSAN, nhtsa_model: ALTIMA }
   - { make: Nissan, model: Rogue, nhtsa_make: NISSAN, nhtsa_model: ROGUE }
   - { make: Nissan, model: Sentra, nhtsa_make: NISSAN, nhtsa_model: SENTRA }

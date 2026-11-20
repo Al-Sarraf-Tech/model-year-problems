@@ -93,16 +93,19 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] `chevrolet/silverado-1500/2011` (2011 Chevrolet Silverado 1500: 640 complaints, 4 recalls on 2026-11-17; air bags most named)
 - [x] `toyota/camry/2011` (2011 Toyota Camry: 625 complaints, 5 recalls on 2026-11-17; visibility/wiper most named, 118 unknown/other)
 - [x] `toyota/camry/2010` (2010 Toyota Camry: 614 complaints, 9 recalls on 2026-11-18; vehicle speed control most named)
-- Model-year backlog is empty after 2010 Camry: next nights take new models from the list below (Grand Cherokee, Cherokee, Sonata first), checking NHTSA spelling and counts before adding.
+- Model-year backlog is empty after 2010 Camry: next nights take new models from the list below (Sonata, Elantra, Optima next), checking NHTSA spelling and counts before adding.
+- 2026-11-19: Hyundai Sonata was tried in the same run but would have added two pages (2011 top year plus 2013 as a featured second year), making four new pages; it was held back. Sonata counts on 2026-11-19: 2011 3,380, 2013 1,920, 2012 1,559 complaints. Expect two Sonata pages when it is added.
 - Adding a new model adds its top year to the featured set and can push the lowest featured pages out of the build. On 2026-11-18
   `honda/cr-v/2019` and `nissan/altima/2014` (already live) dropped out, so they were pinned in `extra_pages`. After adding a model,
   compare the built page list with the live sitemap and pin any live page that would disappear.
+  On 2026-11-19 adding Grand Cherokee and Cherokee pushed out `chevrolet/silverado-1500/2015`, `honda/accord/2013`, `honda/cr-v/2017`; all three pinned.
+  `npm run build` does not clear `_site`, so `rm -rf _site` before comparing page lists.
 
 ## Backlog: new models (check NHTSA spelling first)
 - [x] Toyota Tacoma (TACOMA) (2026-11-18: page `toyota/tacoma/2016`, 325 complaints, 4 recalls; power train most named. 2010 returned 0 complaints, flagged as gap)
 - [x] Toyota Highlander (HIGHLANDER) (2026-11-18: page `toyota/highlander/2019`, 514 complaints, 3 recalls; power train most named)
-- [ ] Jeep Grand Cherokee (GRAND CHEROKEE)
-- [ ] Jeep Cherokee (CHEROKEE)
+- [x] Jeep Grand Cherokee (GRAND CHEROKEE) (2026-11-19: page `jeep/grand-cherokee/2014`, 2,394 complaints, 19 recalls; electrical system most named, power train close behind)
+- [x] Jeep Cherokee (CHEROKEE) (2026-11-19: pages `jeep/cherokee/2014` (2,652 complaints, 13 recalls) and `jeep/cherokee/2015` (1,795, 11; entered the featured set as a second year); power train most named. 2010–2013 return 0 complaints and 0 recalls: the Cherokee name returned for MY2014, so these are "no records", not gaps)
 - [ ] Hyundai Sonata (SONATA)
 - [ ] Hyundai Elantra (ELANTRA)
 - [ ] Kia Optima (OPTIMA)
