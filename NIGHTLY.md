@@ -93,7 +93,7 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] `chevrolet/silverado-1500/2011` (2011 Chevrolet Silverado 1500: 640 complaints, 4 recalls on 2026-11-17; air bags most named)
 - [x] `toyota/camry/2011` (2011 Toyota Camry: 625 complaints, 5 recalls on 2026-11-17; visibility/wiper most named, 118 unknown/other)
 - [x] `toyota/camry/2010` (2010 Toyota Camry: 614 complaints, 9 recalls on 2026-11-18; vehicle speed control most named)
-- Model-year backlog is empty after 2010 Camry: next nights take new models from the list below (Elantra, Optima, Sorento next; Sonata done 2026-11-20), checking NHTSA spelling and counts before adding.
+- Model-year backlog is empty after 2010 Camry: next nights take new models from the list below (Outback, Forester, Ram 1500 next; Elantra, Optima, Sorento done 2026-11-21), checking NHTSA spelling and counts before adding.
 - 2026-11-19: Hyundai Sonata was tried in the same run but would have added two pages (2011 top year plus 2013 as a featured second year), making four new pages; it was held back. Sonata counts on 2026-11-19: 2011 3,380, 2013 1,920, 2012 1,559 complaints. Expect two Sonata pages when it is added.
 - 2026-11-20: Elantra spot check: 2011 461, 2013 1,335, 2017 771 complaints (plausible; re-fetch before adding).
 - Adding a new model adds its top year to the featured set and can push the lowest featured pages out of the build. On 2026-11-18
@@ -101,6 +101,7 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
   compare the built page list with the live sitemap and pin any live page that would disappear.
   On 2026-11-19 adding Grand Cherokee and Cherokee pushed out `chevrolet/silverado-1500/2015`, `honda/accord/2013`, `honda/cr-v/2017`; all three pinned.
   On 2026-11-20 adding Sonata pushed out `ford/explorer/2015` and `jeep/cherokee/2015`; both pinned, and the three Sonata pages pinned too.
+  On 2026-11-21 adding Elantra, Optima and Sorento pushed out `ford/escape/2010` and `ford/focus/2013`; both pinned. No second years entered the featured set.
   `npm run build` does not clear `_site`, so `rm -rf _site` before comparing page lists.
 
 ## Backlog: new models (check NHTSA spelling first)
@@ -109,9 +110,9 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] Jeep Grand Cherokee (GRAND CHEROKEE) (2026-11-19: page `jeep/grand-cherokee/2014`, 2,394 complaints, 19 recalls; electrical system most named, power train close behind)
 - [x] Jeep Cherokee (CHEROKEE) (2026-11-19: pages `jeep/cherokee/2014` (2,652 complaints, 13 recalls) and `jeep/cherokee/2015` (1,795, 11; entered the featured set as a second year); power train most named. 2010–2013 return 0 complaints and 0 recalls: the Cherokee name returned for MY2014, so these are "no records", not gaps)
 - [x] Hyundai Sonata (SONATA) (2026-11-20: pages `hyundai/sonata/2011` (3,380 complaints, 14 recalls; steering most named), `hyundai/sonata/2013` (1,920, 9; engine most named; featured second year) and `hyundai/sonata/2012` (1,559, 8; engine most named; added via extra_pages). All 11 years 2010–2020 returned plausible counts, no gaps)
-- [ ] Hyundai Elantra (ELANTRA)
-- [ ] Kia Optima (OPTIMA)
-- [ ] Kia Sorento (SORENTO)
+- [x] Hyundai Elantra (ELANTRA) (2026-11-21: page `hyundai/elantra/2013`, 1,335 complaints, 4 recalls; steering most named. All 11 years 2010–2020 plausible, no gaps)
+- [x] Kia Optima (OPTIMA) (2026-11-21: page `kia/optima/2013`, 1,388 complaints, 9 recalls; engine most named. 2010 has 75 complaints (old generation's last year), not flagged)
+- [x] Kia Sorento (SORENTO) (2026-11-21: page `kia/sorento/2011`, 1,521 complaints, 8 recalls; engine most named, structure and power train close. 2010 returned 3 complaints and 2 recalls (2009: 55, 2011: 1,521); see Blocked)
 - [ ] Subaru Outback (OUTBACK)
 - [ ] Subaru Forester (FORESTER)
 - [ ] Ram 1500 (1500, make RAM)
@@ -183,6 +184,7 @@ Do not publish:
 - Chevrolet Silverado 1500 2010: complaints API returned 0 but 3 recalls. Flagged as a likely gap.
 - Toyota Tacoma 2010: on 2026-11-18 the complaints API returned 0 for TACOMA 2010 but 13 recalls (2011: 186, 2012: 295). Flagged on the site as a likely gap; no page.
 - Toyota Camry 2014: re-checked 2026-11-18, complaints API now returns 15. Still flagged.
+- Kia Sorento 2010: on 2026-11-21 the complaints API returned 3 (2 recalls) vs 1,521 for 2011 and 55 for 2009. Likely a model-changeover year with very few US vehicles rather than an API gap, but the gap rule only checks years with two neighbours, so the Sorento model page currently names 2010 as the "fewest" year (same as Cruze 2010 with 2). No page. Consider an edge-year rule (e.g. under 10 complaints while the only neighbour has over 100) so near-empty first years aren't ranked; don't use a 10% rule there, it would wrongly flag Explorer 2010 (115) and Grand Cherokee 2010 (118).
 
 ## Done outside the backlog
 - 2026-11-15: weekly full refresh, `npm run fetch` 187/187 model-years (shipped with the Cruze/Silverado pages).
