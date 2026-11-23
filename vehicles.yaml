@@ -66,6 +66,9 @@ extra_pages:
   - hyundai/sonata/2012
   - ford/escape/2010
   - ford/focus/2013
+  - ford/explorer/2013
+  - ford/focus/2014
+  - ford/fusion/2012
 component_topics:
   - { make: Ford, model: Focus, component: POWER TRAIN, slug: power-train }
   - { make: Ford, model: Fusion, component: STEERING, slug: steering }
@@ -94,6 +97,9 @@ models:
   - { make: Hyundai, model: Elantra, nhtsa_make: HYUNDAI, nhtsa_model: ELANTRA }
   - { make: Kia, model: Optima, nhtsa_make: KIA, nhtsa_model: OPTIMA }
   - { make: Kia, model: Sorento, nhtsa_make: KIA, nhtsa_model: SORENTO }
+  - { make: Subaru, model: Outback, nhtsa_make: SUBARU, nhtsa_model: OUTBACK }
+  - { make: Subaru, model: Forester, nhtsa_make: SUBARU, nhtsa_model: FORESTER }
+  - { make: Ram, model: "1500", nhtsa_make: RAM, nhtsa_model: "1500" }
   - { make: Nissan, model: Altima, nhtsa_make: NISSAN, nhtsa_model: ALTIMA }
   - { make: Nissan, model: Rogue, nhtsa_make: NISSAN, nhtsa_model: ROGUE }
   - { make: Nissan, model: Sentra, nhtsa_make: NISSAN, nhtsa_model: SENTRA }
