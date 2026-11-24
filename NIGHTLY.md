@@ -93,7 +93,7 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] `chevrolet/silverado-1500/2011` (2011 Chevrolet Silverado 1500: 640 complaints, 4 recalls on 2026-11-17; air bags most named)
 - [x] `toyota/camry/2011` (2011 Toyota Camry: 625 complaints, 5 recalls on 2026-11-17; visibility/wiper most named, 118 unknown/other)
 - [x] `toyota/camry/2010` (2010 Toyota Camry: 614 complaints, 9 recalls on 2026-11-18; vehicle speed control most named)
-- Model-year backlog is empty after 2010 Camry: next nights take new models from the list below (Sierra 1500, Grand Caravan, Pathfinder next; Outback, Forester, Ram 1500 done 2026-11-22), checking NHTSA spelling and counts before adding.
+- Model-year backlog is empty after 2010 Camry: next nights take new models from the list below (Pilot, Odyssey next; Sierra 1500, Grand Caravan, Pathfinder done 2026-11-23; Outback, Forester, Ram 1500 done 2026-11-22), checking NHTSA spelling and counts before adding.
 - 2026-11-19: Hyundai Sonata was tried in the same run but would have added two pages (2011 top year plus 2013 as a featured second year), making four new pages; it was held back. Sonata counts on 2026-11-19: 2011 3,380, 2013 1,920, 2012 1,559 complaints. Expect two Sonata pages when it is added.
 - 2026-11-20: Elantra spot check: 2011 461, 2013 1,335, 2017 771 complaints (plausible; re-fetch before adding).
 - Adding a new model adds its top year to the featured set and can push the lowest featured pages out of the build. On 2026-11-18
@@ -103,6 +103,7 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
   On 2026-11-20 adding Sonata pushed out `ford/explorer/2015` and `jeep/cherokee/2015`; both pinned, and the three Sonata pages pinned too.
   On 2026-11-21 adding Elantra, Optima and Sorento pushed out `ford/escape/2010` and `ford/focus/2013`; both pinned. No second years entered the featured set.
   On 2026-11-22 adding Outback, Forester and Ram 1500 (plus the weekly refresh) pushed out `ford/explorer/2013`, `ford/focus/2014`, `ford/fusion/2012`; all three pinned.
+  On 2026-11-23 adding Sierra 1500, Grand Caravan and Pathfinder pushed out `ford/escape/2017` and `ford/fusion/2011`; both pinned.
   `npm run build` does not clear `_site`, so `rm -rf _site` before comparing page lists.
 
 ## Backlog: new models (check NHTSA spelling first)
@@ -117,9 +118,9 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] Subaru Outback (OUTBACK) (2026-11-22: page `subaru/outback/2019`, 1,037 complaints, 3 recalls; electrical system most named, visibility/wiper close behind. All 11 years 2010–2020 plausible, no gaps)
 - [x] Subaru Forester (FORESTER) (2026-11-22: page `subaru/forester/2019`, 836 complaints, 3 recalls; visibility/wiper most named. 2013 is low (78) but plausible next to 2012 (107); not flagged)
 - [x] Ram 1500 (1500, make RAM) (2026-11-22: page `ram/1500/2014`, 1,788 complaints, 17 recalls; steering most named. 2019 (1,505) and 2016 (1,571) did not enter the featured set. 2010 returned 0 complaints under make RAM (4 recalls); see Blocked)
-- [ ] GMC Sierra 1500 (SIERRA 1500)
-- [ ] Dodge Grand Caravan (GRAND CARAVAN)
-- [ ] Nissan Pathfinder (PATHFINDER)
+- [x] GMC Sierra 1500 (SIERRA 1500) (2026-11-23: page `gmc/sierra-1500/2014`, 865 complaints, 9 recalls; exterior lighting most named, steering next. 2010 returned 0 complaints (4 recalls), flagged as gap. 2012 (49) and 2016 (54) look low next to Silverado 1500 (284, 804) but are above the 10% rule; see Blocked)
+- [x] Dodge Grand Caravan (GRAND CARAVAN) (2026-11-23: page `dodge/grand-caravan/2016`, 1,159 complaints, 6 recalls; electrical system most named. 2010 (1,042) did not enter the featured set. 2019 (51) and 2020 (20, 1 recall) are low; last production years, not flagged)
+- [x] Nissan Pathfinder (PATHFINDER) (2026-11-23: page `nissan/pathfinder/2013`, 891 complaints, 11 recalls; power train most named. 2010–2012 low (40, 45, 23) as the old body-on-frame generation's last years; not flagged)
 - [ ] Honda Pilot (PILOT)
 - [ ] Honda Odyssey (ODYSSEY)
 
@@ -187,6 +188,7 @@ Do not publish:
 - Toyota Camry 2014: re-checked 2026-11-18, complaints API now returns 15. Still flagged.
 - Kia Sorento 2010: on 2026-11-21 the complaints API returned 3 (2 recalls) vs 1,521 for 2011 and 55 for 2009. Likely a model-changeover year with very few US vehicles rather than an API gap, but the gap rule only checks years with two neighbours, so the Sorento model page currently names 2010 as the "fewest" year (same as Cruze 2010 with 2). No page. Consider an edge-year rule (e.g. under 10 complaints while the only neighbour has over 100) so near-empty first years aren't ranked; don't use a 10% rule there, it would wrongly flag Explorer 2010 (115) and Grand Cherokee 2010 (118).
 - Ram 1500 2010: on 2026-11-22 the complaints API returned 0 for make RAM model 1500 2010 (4 recalls; 2011: 689). The 2010 truck was still branded Dodge: make DODGE model `RAM 1500` 2010 returned 489 complaints. The site flags 2010 as a likely API gap; no page. A later fix could map 2010 to DODGE / RAM 1500 (needs a per-year nhtsa_make override in the fetch script).
+- GMC Sierra 1500 2012 and 2016: on 2026-11-23 the complaints API returned 49 (2011: 366, 2013: 168) and 54 (2015: 819, 2017: 433), while Chevrolet Silverado 1500 (same platform) returned 284 and 804. Both are above the 10% neighbour rule so they are not flagged, and the Sierra model page names 2012 as the "fewest" year. No alternative NHTSA spelling (SIERRA, SIERRA 1500 LIMITED/HD/DENALI) returned complaints. Treat as a possible gap; no page for either year. 2010 returned 0 complaints with 4 recalls and is flagged.
 
 ## Done outside the backlog
 - 2026-11-22: weekly full refresh, `npm run fetch` 308/308 model-years (shipped with the Outback/Forester/Ram 1500 pages).
