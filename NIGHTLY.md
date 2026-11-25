@@ -121,8 +121,12 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] GMC Sierra 1500 (SIERRA 1500) (2026-11-23: page `gmc/sierra-1500/2014`, 865 complaints, 9 recalls; exterior lighting most named, steering next. 2010 returned 0 complaints (4 recalls), flagged as gap. 2012 (49) and 2016 (54) look low next to Silverado 1500 (284, 804) but are above the 10% rule; see Blocked)
 - [x] Dodge Grand Caravan (GRAND CARAVAN) (2026-11-23: page `dodge/grand-caravan/2016`, 1,159 complaints, 6 recalls; electrical system most named. 2010 (1,042) did not enter the featured set. 2019 (51) and 2020 (20, 1 recall) are low; last production years, not flagged)
 - [x] Nissan Pathfinder (PATHFINDER) (2026-11-23: page `nissan/pathfinder/2013`, 891 complaints, 11 recalls; power train most named. 2010–2012 low (40, 45, 23) as the old body-on-frame generation's last years; not flagged)
-- [ ] Honda Pilot (PILOT)
-- [ ] Honda Odyssey (ODYSSEY)
+- [x] Honda Pilot (PILOT) (2026-11-24: page `honda/pilot/2016`, 1,738 complaints, 8 recalls; engine most named, electrical system next. All 11 years 2010–2020 plausible (2014: 116, 2015: 109 are low next to 2013: 273 but above the 10% rule); no gaps)
+- [x] Honda Odyssey (ODYSSEY) (2026-11-24: page `honda/odyssey/2018`, 1,022 complaints, 16 recalls; electrical system most named, forward collision avoidance next. 2019 (1,021) did not get a page. 2017 returned 40 (2016: 274, 2018: 1,022): above the 10% rule so not flagged, but a possible changeover-year low; no page)
+- [ ] Honda Ridgeline (RIDGELINE)
+- [ ] Toyota Sienna (SIENNA)
+- [ ] Chrysler 200 / Chrysler Town & Country (check NHTSA spelling and counts first; pick one)
+- [ ] Dodge Charger (CHARGER)
 
 ## Component topics
 
@@ -161,8 +165,13 @@ Published:
   group in 2011–2014 (744, 361, 837, 500). Steering campaigns returned: 14V286000 (2011–2013), 14E001000
   (2011–2012), 17V530000 (2017). 2014 (top group) and 2015–2016 returned no steering campaign.
 
+- [x] Ford Explorer structure, `/ford/explorer/structure/` (fetched 2026-11-24; 3,132 complaints in 2015–2019). Structure is the
+  most-named group in 2015–2019 (413, 594, 669, 288, 151); 2015–2018 each have at least 250. 5 matching STRUCTURE recalls returned
+  (15V171000 for 2011–2013; 21V316000, 24V031000, 25V347000, 26V448000 for 2015–2019), each with a campaignNumber lookup done by the fetch.
+  Top group is the complaint count only; not the recalled population.
+
 Meets the count bar, not published:
-- Ford Explorer structure. In the 2026-11-13 cache structure is top in 2015 (412), 2016 (594), 2017 (665), 2018 (288). In the 2026-11-06 cache, structure is the most-named group in 2015
+- (Published 2026-11-24, see above.) Ford Explorer structure. In the 2026-11-13 cache structure is top in 2015 (412), 2016 (594), 2017 (665), 2018 (288). In the 2026-11-06 cache, structure is the most-named group in 2015
   (411), 2016 (592), 2017 (665), and 2018 (288), with body recalls whose years overlap (including
   24V031000). Re-fetch Explorer before publishing. Same rules: the roof-rail and trim notices name
   the vehicles, and the complaint count is not that population.
@@ -191,6 +200,7 @@ Do not publish:
 - GMC Sierra 1500 2012 and 2016: on 2026-11-23 the complaints API returned 49 (2011: 366, 2013: 168) and 54 (2015: 819, 2017: 433), while Chevrolet Silverado 1500 (same platform) returned 284 and 804. Both are above the 10% neighbour rule so they are not flagged, and the Sierra model page names 2012 as the "fewest" year. No alternative NHTSA spelling (SIERRA, SIERRA 1500 LIMITED/HD/DENALI) returned complaints. Treat as a possible gap; no page for either year. 2010 returned 0 complaints with 4 recalls and is flagged.
 
 ## Done outside the backlog
+- 2026-11-24: nightly batch of three: Honda Pilot, Honda Odyssey (new models) and the Ford Explorer structure component topic. Explorer re-fetched 11/11 years. Sitemap compared with live: nothing dropped, so no new pins (146 live URLs -> 151).
 - 2026-11-22: weekly full refresh, `npm run fetch` 308/308 model-years (shipped with the Outback/Forester/Ram 1500 pages).
 - 2026-11-15: weekly full refresh, `npm run fetch` 187/187 model-years (shipped with the Cruze/Silverado pages).
 - 2026-11-12: authorized search-impressions batch (not a nightly page). Model-year pages gained computed FAQ answers: most common

@@ -76,6 +76,7 @@ component_topics:
   - { make: Ford, model: Fusion, component: STEERING, slug: steering }
   - { make: Chevrolet, model: Equinox, component: ENGINE, slug: engine }
   - { make: Ford, model: Explorer, component: STEERING, slug: steering }
+  - { make: Ford, model: Explorer, component: STRUCTURE, slug: structure }
 models:
   - { make: Honda, model: Accord, nhtsa_make: HONDA, nhtsa_model: ACCORD }
   - { make: Honda, model: Civic, nhtsa_make: HONDA, nhtsa_model: CIVIC }
@@ -108,3 +109,5 @@ models:
   - { make: Nissan, model: Rogue, nhtsa_make: NISSAN, nhtsa_model: ROGUE }
   - { make: Nissan, model: Sentra, nhtsa_make: NISSAN, nhtsa_model: SENTRA }
   - { make: Nissan, model: Pathfinder, nhtsa_make: NISSAN, nhtsa_model: PATHFINDER }
+  - { make: Honda, model: Pilot, nhtsa_make: HONDA, nhtsa_model: PILOT }
+  - { make: Honda, model: Odyssey, nhtsa_make: HONDA, nhtsa_model: ODYSSEY }
