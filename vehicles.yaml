@@ -111,3 +111,6 @@ models:
   - { make: Nissan, model: Pathfinder, nhtsa_make: NISSAN, nhtsa_model: PATHFINDER }
   - { make: Honda, model: Pilot, nhtsa_make: HONDA, nhtsa_model: PILOT }
   - { make: Honda, model: Odyssey, nhtsa_make: HONDA, nhtsa_model: ODYSSEY }
+  - { make: Honda, model: Ridgeline, nhtsa_make: HONDA, nhtsa_model: RIDGELINE }
+  - { make: Toyota, model: Sienna, nhtsa_make: TOYOTA, nhtsa_model: SIENNA }
+  - { make: Chrysler, model: "200", nhtsa_make: CHRYSLER, nhtsa_model: "200" }

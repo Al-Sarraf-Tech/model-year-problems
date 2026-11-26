@@ -59,7 +59,7 @@ export function topicPartsLinks(topic, tag) {
   const obd = OBD_TOP.has(topic.spec.component);
   if (!phrase && !obd) return [];
   const years = (topic.years || [])
-    .filter((y) => y && !y.noRecords && !y.suspectGap && y.comp && y.comp.count > 0)
+    .filter((y) => y && !y.noRecords && !y.suspectGap && !y.sparse && y.comp && y.comp.count > 0)
     .sort((a, b) => b.comp.count - a.comp.count || a.year - b.year);
   if (!years.length) return [];
   const partLimit = obd ? MAX_LINKS - 1 : MAX_LINKS;

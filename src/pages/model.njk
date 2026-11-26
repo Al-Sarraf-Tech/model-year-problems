@@ -14,7 +14,7 @@
       const byRecalls = [...h.years].sort((x, y) => y.s.recalls.length - x.s.recalls.length)[0];
       return [
         { q: `Which ${h.name} model year has the most owner complaints?`, a: `${w.year}, with ${fmt(w.s.total)} complaints in NHTSA's data (owners name ${w.s.named[0]?.label.toLowerCase()} most often). That is a raw count among model years ${h.range}. It is not adjusted for sales or age, and it is not a reliability or safety ranking.` },
-        { q: `Which ${h.name} year has the fewest complaints?`, a: `${b.year}, with ${fmt(b.s.total)} complaints among model years ${h.range} that are not flagged as API gaps. Fewer complaints is not a reliability or safety ranking.` },
+        { q: `Which ${h.name} year has the fewest complaints?`, a: `${b.year}, with ${fmt(b.s.total)} complaints among model years ${h.range} that are not flagged as API gaps${h.hasSparse ? " or near-empty (fewer than 10 complaints)" : ""}. Fewer complaints is not a reliability or safety ranking.` },
         { q: `Which ${h.name} years should I avoid?`, a: `This site does not publish an avoid list. NHTSA does not rate reliability, and complaint counts are not adjusted for how many cars were sold or how old they are. What the data does show: the raw complaint count is highest for ${w.year} (${fmt(w.s.total)}) and lowest for ${b.year} (${fmt(b.s.total)}), and ${byRecalls.year} has the most recall campaigns (${byRecalls.s.recalls.length}). The table above lists every year. For a specific car, check its VIN at nhtsa.gov/recalls and have it inspected.` },
         (() => {
           const tally = new Map();
@@ -44,10 +44,10 @@
 <div class="tablewrap"><table>
 <thead><tr><th>Model year</th><th class="num">Complaints</th><th class="num">Recalls</th><th class="num">Crash</th><th class="num">Fire</th><th>Most-named component</th></tr></thead>
 <tbody>
-{% for y in hub.years %}<tr{% if y.suspectGap %} class="flag"{% endif %}><td>{% if y.featured %}<a href="/{{ hub.makeSlug }}/{{ hub.modelSlug }}/{{ y.year }}/">{{ y.year }}</a>{% else %}{{ y.year }}{% endif %}{% if y.noRecords %} — no NHTSA records (likely not sold as this model year){% elif y.suspectGap %} — NHTSA's API count looks incomplete{% endif %}</td><td class="num">{{ y.s.total | n }}</td><td class="num">{{ y.s.recalls.length }}</td><td class="num">{{ y.s.crash | n }}</td><td class="num">{{ y.s.fire | n }}</td><td>{{ y.s.named[0].label if y.s.named.length else "—" }}{% if y.s.named.length %} <span class="muted">({{ y.s.named[0].share }}%)</span>{% endif %}</td></tr>
+{% for y in hub.years %}<tr{% if y.suspectGap %} class="flag"{% endif %}><td>{% if y.featured %}<a href="/{{ hub.makeSlug }}/{{ hub.modelSlug }}/{{ y.year }}/">{{ y.year }}</a>{% else %}{{ y.year }}{% endif %}{% if y.noRecords %} — no NHTSA records (likely not sold as this model year){% elif y.suspectGap %} — NHTSA's API count looks incomplete{% elif y.sparse %} — fewer than 10 complaints, too few to compare{% endif %}</td><td class="num">{{ y.s.total | n }}</td><td class="num">{{ y.s.recalls.length }}</td><td class="num">{{ y.s.crash | n }}</td><td class="num">{{ y.s.fire | n }}</td><td>{{ y.s.named[0].label if y.s.named.length else "—" }}{% if y.s.named.length %} <span class="muted">({{ y.s.named[0].share }}%)</span>{% endif %}</td></tr>
 {% endfor %}
 </tbody></table></div>
-<p class="muted">Linked years have a full page with every component and recall. Other years get pages over time; the counts above are already live.{% if hub.years | selectattr("suspectGap") | length %} Highlighted rows look like gaps in what NHTSA's API returns for that year, not a quiet year; they are left out of the complaint-count order.{% endif %}</p>
+<p class="muted">Linked years have a full page with every component and recall. Other years get pages over time; the counts above are already live.{% if hub.years | selectattr("suspectGap") | length %} Highlighted rows look like gaps in what NHTSA's API returns for that year, not a quiet year; they are left out of the complaint-count order.{% endif %}{% if hub.hasSparse %} Years with fewer than 10 complaints are marked and also left out of the most/fewest order, because a near-empty year is too few complaints to compare.{% endif %}</p>
 {% if hub.topics.length %}
 <h2 id="components">Component pages</h2>
 <ul class="cards">

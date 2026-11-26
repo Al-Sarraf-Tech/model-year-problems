@@ -90,13 +90,16 @@ export function loadAll() {
       y.noRecords = y.s.total === 0 && y.s.recalls.length === 0;
       y.suspectGap = (y.s.total === 0 && y.s.recalls.length > 0) ||
         (!!prev && !!next && prev.s.total > 100 && next.s.total > 100 && y.s.total < 0.1 * Math.min(prev.s.total, next.s.total));
+      // Near-empty years (fewer than 10 complaints, not already flagged) are too few to
+      // compare: they are shown with a note and left out of the most/fewest order.
+      y.sparse = !y.noRecords && !y.suspectGap && y.s.total < 10;
     }
-    const rankable = years.filter((y) => !y.noRecords && !y.suspectGap).sort((a, b) => b.s.total - a.s.total);
+    const rankable = years.filter((y) => !y.noRecords && !y.suspectGap && !y.sparse).sort((a, b) => b.s.total - a.s.total);
     rankable.forEach((y, i) => { y.rank = i + 1; y.rankOf = rankable.length; });
     const firstY = years.find((y) => !y.noRecords)?.year, lastY = [...years].reverse().find((y) => !y.noRecords)?.year;
     models.push({
       make: m.make, model: m.model, makeSlug, modelSlug, name: `${m.make} ${m.model}`,
-      url: `/${makeSlug}/${modelSlug}/`, years, rankable, firstYear: firstY, lastYear: lastY,
+      url: `/${makeSlug}/${modelSlug}/`, years, rankable, hasSparse: years.some((y) => y.sparse), firstYear: firstY, lastYear: lastY,
       range: `${cfg.years[0]}–${cfg.years[1]}`,
       totalComplaints: years.reduce((a, y) => a + y.s.total, 0),
       totalRecalls: new Set(years.flatMap((y) => y.s.recalls.map((r) => r.campaign))).size,
@@ -130,7 +133,7 @@ export function loadAll() {
       else lines.push(`NHTSA's complaints API lists ${fmt(s.total)} owner complaints for the ${name}.`);
       lines.push(`Checked ${checked} on NHTSA's complaints API (complaintsByVehicle) and recalls API (recallsByVehicle): ${fmt(s.total)} owner complaints and ${s.recalls.length} recall campaign${s.recalls.length === 1 ? "" : "s"}.`);
       lines.push(`Complaints are unverified allegations, not NHTSA findings, and not a reliability or safety ranking. Counts are not adjusted for how many vehicles were sold or how long they have been on the road. A complaint can name more than one component, so the shares can pass 100%. ${fmt(s.crash)} ${s.crash === 1 ? "complaint reports" : "complaints report"} a crash and ${fmt(s.fire)} ${s.fire === 1 ? "complaint reports" : "complaints report"} a fire. Together the complaints report ${fmt(s.injuries)} ${s.injuries === 1 ? "injury" : "injuries"} and ${fmt(s.deaths)} ${s.deaths === 1 ? "death" : "deaths"}, which is what owners wrote down.`);
-      if (y.rank) lines.push(`By raw complaint count, ${y.year} is ${y.rank === 1 ? "the highest" : `the ${ordinal(y.rank)}-highest`} of ${y.rankOf} ${m.model} model years in ${m.range} with usable counts (median of the other years: ${fmt(median(m.rankable.filter((o) => o !== y).map((o) => o.s.total)))}). Years flagged as API gaps are not in that comparison.`);
+      if (y.rank) lines.push(`By raw complaint count, ${y.year} is ${y.rank === 1 ? "the highest" : `the ${ordinal(y.rank)}-highest`} of ${y.rankOf} ${m.model} model years in ${m.range} with usable counts (median of the other years: ${fmt(median(m.rankable.filter((o) => o !== y).map((o) => o.s.total)))}). Years flagged as API gaps${m.hasSparse ? " or with fewer than 10 complaints" : ""} are not in that comparison.`);
       if (s.recalls[0]) lines.push(`The newest recall is campaign ${s.recalls[0].campaign}, received ${prettyDate(s.recalls[0].received)}, component ${prettyComponent(recallTop(s.recalls[0])).toLowerCase()}. A recall applies only to the vehicles named in its notice, which can be some cars of this model year rather than all of them. The complaint total is not the number of vehicles affected. Check a specific car by VIN at nhtsa.gov/recalls.`);
       else lines.push(`The recalls API lists no campaign for this model year as of ${checked}. A campaign can be opened later, so VIN status still has to be checked at nhtsa.gov/recalls.`);
       if (s.parkIt.length) lines.push(`${s.parkIt.length} of these recalls ${s.parkIt.length === 1 ? "carries" : "carry"} a "park it" or "park outside" warning from NHTSA; see the recall list.`);
@@ -166,9 +169,9 @@ export function loadAll() {
         name: spec.component, label, count: 0, share: y.s.total ? "0" : "0", note: COMPONENT_NOTES[spec.component] || "",
       };
       const matchingRecalls = y.s.recalls.filter((r) => recallTop(r) === spec.component);
-      return { year: y.year, featured: y.featured, noRecords: y.noRecords, suspectGap: y.suspectGap, rec: y.rec, s: y.s, comp, matchingRecalls };
+      return { year: y.year, featured: y.featured, noRecords: y.noRecords, suspectGap: y.suspectGap, sparse: y.sparse, rec: y.rec, s: y.s, comp, matchingRecalls };
     });
-    const usable = years.filter((y) => !y.noRecords && !y.suspectGap);
+    const usable = years.filter((y) => !y.noRecords && !y.suspectGap && !y.sparse);
     const topYears = usable.filter((y) => y.s.named[0]?.name === spec.component);
     const complaintNaming = usable.reduce((a, y) => a + y.comp.count, 0);
     const totalComplaints = usable.reduce((a, y) => a + y.s.total, 0);

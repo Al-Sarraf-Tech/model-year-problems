@@ -104,6 +104,7 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
   On 2026-11-21 adding Elantra, Optima and Sorento pushed out `ford/escape/2010` and `ford/focus/2013`; both pinned. No second years entered the featured set.
   On 2026-11-22 adding Outback, Forester and Ram 1500 (plus the weekly refresh) pushed out `ford/explorer/2013`, `ford/focus/2014`, `ford/fusion/2012`; all three pinned.
   On 2026-11-23 adding Sierra 1500, Grand Caravan and Pathfinder pushed out `ford/escape/2017` and `ford/fusion/2011`; both pinned.
+  On 2026-11-25 adding Ridgeline, Sienna and Chrysler 200 pushed nothing out (151 live URLs -> 158); no pins.
   `npm run build` does not clear `_site`, so `rm -rf _site` before comparing page lists.
 
 ## Backlog: new models (check NHTSA spelling first)
@@ -123,10 +124,14 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [x] Nissan Pathfinder (PATHFINDER) (2026-11-23: page `nissan/pathfinder/2013`, 891 complaints, 11 recalls; power train most named. 2010–2012 low (40, 45, 23) as the old body-on-frame generation's last years; not flagged)
 - [x] Honda Pilot (PILOT) (2026-11-24: page `honda/pilot/2016`, 1,738 complaints, 8 recalls; engine most named, electrical system next. All 11 years 2010–2020 plausible (2014: 116, 2015: 109 are low next to 2013: 273 but above the 10% rule); no gaps)
 - [x] Honda Odyssey (ODYSSEY) (2026-11-24: page `honda/odyssey/2018`, 1,022 complaints, 16 recalls; electrical system most named, forward collision avoidance next. 2019 (1,021) did not get a page. 2017 returned 40 (2016: 274, 2018: 1,022): above the 10% rule so not flagged, but a possible changeover-year low; no page)
-- [ ] Honda Ridgeline (RIDGELINE)
-- [ ] Toyota Sienna (SIENNA)
-- [ ] Chrysler 200 / Chrysler Town & Country (check NHTSA spelling and counts first; pick one)
-- [ ] Dodge Charger (CHARGER)
+- [x] Honda Ridgeline (RIDGELINE) (2026-11-25: page `honda/ridgeline/2017`, 348 complaints, 9 recalls; electrical system most named, engine close behind. 2015 returned 2 complaints and 0 recalls, 2016 0 and 0 (no records); 2015 is marked near-empty (new rule, see Blocked))
+- [x] Toyota Sienna (SIENNA) (2026-11-25: page `toyota/sienna/2011`, 615 complaints, 14 recalls; air bags most named, structure next. All 11 years 2010–2020 plausible (2019: 48, 2020: 39 low but not flagged); no gaps)
+- [x] Chrysler 200 (200, make CHRYSLER) (2026-11-25: page `chrysler/200/2015`, 1,994 complaints, 8 recalls; electrical system most named, power train and engine close. 2018 returned 1 complaint (0 recalls), marked near-empty; 2019–2020 no records. 2010 returned 13 complaints and 0 recalls (2011: 336); see Blocked)
+- [ ] Dodge Charger (CHARGER) (spot check 2026-11-25: all 11 years 2010–2020 plausible, 2011 top at 698, 2020 59)
+- [ ] Chrysler Town & Country: NHTSA splits the spelling. On 2026-11-25 `TOWN & COUNTRY` returned 1,556 for 2010 and 0 for 2011+, while `TOWN AND COUNTRY` returned 0 for 2010 and 773 (2011), 635 (2012), 383 (2015), 527 (2016), 0 (2017, model ended). Needs a per-year nhtsa_model override in the fetch script before adding; do not add with one spelling.
+- [ ] Ford Edge (EDGE) (spot check 2026-11-25: 2011 1,803, 2016 934)
+- [ ] Chevrolet Traverse (TRAVERSE) (spot check 2026-11-25: 2011 608, 2016 292)
+- [ ] Toyota 4Runner (4RUNNER) (spot check 2026-11-25: 2011 163, 2016 81; lower volume, take after the others)
 
 ## Component topics
 
@@ -199,7 +204,11 @@ Do not publish:
 - Ram 1500 2010: on 2026-11-22 the complaints API returned 0 for make RAM model 1500 2010 (4 recalls; 2011: 689). The 2010 truck was still branded Dodge: make DODGE model `RAM 1500` 2010 returned 489 complaints. The site flags 2010 as a likely API gap; no page. A later fix could map 2010 to DODGE / RAM 1500 (needs a per-year nhtsa_make override in the fetch script).
 - GMC Sierra 1500 2012 and 2016: on 2026-11-23 the complaints API returned 49 (2011: 366, 2013: 168) and 54 (2015: 819, 2017: 433), while Chevrolet Silverado 1500 (same platform) returned 284 and 804. Both are above the 10% neighbour rule so they are not flagged, and the Sierra model page names 2012 as the "fewest" year. No alternative NHTSA spelling (SIERRA, SIERRA 1500 LIMITED/HD/DENALI) returned complaints. Treat as a possible gap; no page for either year. 2010 returned 0 complaints with 4 recalls and is flagged.
 
+- Chrysler 200 2010: on 2026-11-25 the complaints API returned 13 complaints and 0 recalls for CHRYSLER 200 2010 (2011: 336). That is above the new 10-complaint near-empty rule, so the Chrysler 200 model page names 2010 as the "fewest" year. It looks like an edge-year oddity (very few records next to a 336-complaint year), not a real quiet year. No page. A later rule could treat an edge year under 5% of its only neighbour as near-empty.
+- Kia Sorento 2010 / Chevrolet Cruze 2010: since 2026-11-25 both are marked near-empty (fewer than 10 complaints) and no longer named "fewest".
+
 ## Done outside the backlog
+- 2026-11-25: nightly batch of three new models: Honda Ridgeline, Toyota Sienna, Chrysler 200. Added a near-empty rule in `src/lib/data.js`: a year with fewer than 10 complaints that is not already a no-records or gap year is marked `sparse`, shown as "fewer than 10 complaints, too few to compare", and left out of the most/fewest order (model, model-year, topic, llms-full and about templates updated). This takes Cruze 2010 (2), Sorento 2010 (3), Ridgeline 2015 (2) and Chrysler 200 2018 (1) out of the "fewest" answers.
 - 2026-11-24: nightly batch of three: Honda Pilot, Honda Odyssey (new models) and the Ford Explorer structure component topic. Explorer re-fetched 11/11 years. Sitemap compared with live: nothing dropped, so no new pins (146 live URLs -> 151).
 - 2026-11-22: weekly full refresh, `npm run fetch` 308/308 model-years (shipped with the Outback/Forester/Ram 1500 pages).
 - 2026-11-15: weekly full refresh, `npm run fetch` 187/187 model-years (shipped with the Cruze/Silverado pages).

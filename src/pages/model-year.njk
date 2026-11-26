@@ -95,7 +95,7 @@
 <div class="tablewrap"><table>
 <thead><tr><th>Model year</th><th class="num">Complaints</th><th class="num">Recalls</th><th>Most-named component</th></tr></thead>
 <tbody>
-{% for y in my.m.years %}{% if not y.noRecords %}<tr{% if y.suspectGap %} class="flag"{% endif %}><td>{% if y.year == my.year %}<strong>{{ y.year }} (this page)</strong>{% elif y.featured %}<a href="/{{ my.m.makeSlug }}/{{ my.m.modelSlug }}/{{ y.year }}/">{{ y.year }}</a>{% else %}{{ y.year }}{% endif %}{% if y.suspectGap %} — NHTSA's API count looks incomplete{% endif %}</td><td class="num">{{ y.s.total | n }}</td><td class="num">{{ y.s.recalls.length }}</td><td>{{ y.s.named[0].label if y.s.named.length else "—" }}</td></tr>{% endif %}
+{% for y in my.m.years %}{% if not y.noRecords %}<tr{% if y.suspectGap %} class="flag"{% endif %}><td>{% if y.year == my.year %}<strong>{{ y.year }} (this page)</strong>{% elif y.featured %}<a href="/{{ my.m.makeSlug }}/{{ my.m.modelSlug }}/{{ y.year }}/">{{ y.year }}</a>{% else %}{{ y.year }}{% endif %}{% if y.suspectGap %} — NHTSA's API count looks incomplete{% elif y.sparse %} — fewer than 10 complaints, too few to compare{% endif %}</td><td class="num">{{ y.s.total | n }}</td><td class="num">{{ y.s.recalls.length }}</td><td>{{ y.s.named[0].label if y.s.named.length else "—" }}</td></tr>{% endif %}
 {% endfor %}
 </tbody></table></div>
 <p><a href="{{ my.m.url }}">All {{ my.m.make }} {{ my.m.model }} years compared →</a></p>
