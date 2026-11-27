@@ -90,12 +90,14 @@ models:
   - { make: Ford, model: Explorer, nhtsa_make: FORD, nhtsa_model: EXPLORER }
   - { make: Ford, model: Focus, nhtsa_make: FORD, nhtsa_model: FOCUS }
   - { make: Ford, model: Fusion, nhtsa_make: FORD, nhtsa_model: FUSION }
+  - { make: Ford, model: Edge, nhtsa_make: FORD, nhtsa_model: EDGE }
   - { make: Chevrolet, model: Silverado 1500, nhtsa_make: CHEVROLET, nhtsa_model: SILVERADO 1500 }
   - { make: Chevrolet, model: Equinox, nhtsa_make: CHEVROLET, nhtsa_model: EQUINOX }
   - { make: Chevrolet, model: Malibu, nhtsa_make: CHEVROLET, nhtsa_model: MALIBU }
   - { make: Chevrolet, model: Cruze, nhtsa_make: CHEVROLET, nhtsa_model: CRUZE }
   - { make: Jeep, model: Grand Cherokee, nhtsa_make: JEEP, nhtsa_model: GRAND CHEROKEE }
   - { make: Jeep, model: Cherokee, nhtsa_make: JEEP, nhtsa_model: CHEROKEE }
+  - { make: Jeep, model: Wrangler, nhtsa_make: JEEP, nhtsa_model: WRANGLER }
   - { make: Hyundai, model: Sonata, nhtsa_make: HYUNDAI, nhtsa_model: SONATA }
   - { make: Hyundai, model: Elantra, nhtsa_make: HYUNDAI, nhtsa_model: ELANTRA }
   - { make: Kia, model: Optima, nhtsa_make: KIA, nhtsa_model: OPTIMA }
@@ -105,6 +107,7 @@ models:
   - { make: Ram, model: "1500", nhtsa_make: RAM, nhtsa_model: "1500" }
   - { make: GMC, model: Sierra 1500, nhtsa_make: GMC, nhtsa_model: SIERRA 1500 }
   - { make: Dodge, model: Grand Caravan, nhtsa_make: DODGE, nhtsa_model: GRAND CARAVAN }
+  - { make: Dodge, model: Charger, nhtsa_make: DODGE, nhtsa_model: CHARGER }
   - { make: Nissan, model: Altima, nhtsa_make: NISSAN, nhtsa_model: ALTIMA }
   - { make: Nissan, model: Rogue, nhtsa_make: NISSAN, nhtsa_model: ROGUE }
   - { make: Nissan, model: Sentra, nhtsa_make: NISSAN, nhtsa_model: SENTRA }
