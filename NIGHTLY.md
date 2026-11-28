@@ -132,8 +132,8 @@ state NHTSA counts only; never claim a defect cause the NHTSA record does not na
 - [ ] Chrysler Town & Country: NHTSA splits the spelling. On 2026-11-25 `TOWN & COUNTRY` returned 1,556 for 2010 and 0 for 2011+, while `TOWN AND COUNTRY` returned 0 for 2010 and 773 (2011), 635 (2012), 383 (2015), 527 (2016), 0 (2017, model ended). Needs a per-year nhtsa_model override in the fetch script before adding; do not add with one spelling.
 - [x] Ford Edge (EDGE) (2026-11-26: page `ford/edge/2013`, 2,451 complaints, 2 recalls; electrical system most named (854), service brakes next, 426 unknown/other. 2011 (1,803, 3 recalls) did not enter the featured set; candidate for a later extra_pages night. 2014 returned 386 (2013: 2,451, 2015: 733): above the 10% rule so not flagged, but a sharp drop; no page)
 - [x] Jeep Wrangler (WRANGLER) (2026-11-26, taken ahead of Traverse as a top-seller search gap: page `jeep/wrangler/2018`, 1,831 complaints, 14 recalls; steering most named (1,117), suspension next. All 11 years 2010–2020 plausible (2017: 312 lowest). NHTSA files 2018 JK and JL under one WRANGLER model year, so the 2018 count mixes both generations. `WRANGLER UNLIMITED` returned the same counts as WRANGLER for most years and 0 for 2016/2018, so it is not a separate series; not used)
-- [ ] Chevrolet Traverse (TRAVERSE) (spot check 2026-11-25: 2011 608, 2016 292)
-- [ ] Toyota 4Runner (4RUNNER) (spot check 2026-11-25: 2011 163, 2016 81; lower volume, take after the others)
+- [x] Chevrolet Traverse (TRAVERSE) (2026-11-27: page `chevrolet/traverse/2010`, 669 complaints, 5 recalls; steering most named (331), engine next. All 11 years 2010–2020 plausible (2013: 162 lowest); no gaps)
+- [x] Toyota 4Runner (4RUNNER) (2026-11-27: page `toyota/4runner/2011`, 163 complaints, 10 recalls; air bags most named (112), structure next. Lower-volume model: all 11 years 2010–2020 plausible, 33–163 complaints, no gaps)
 
 ## Component topics
 
@@ -210,6 +210,7 @@ Do not publish:
 - Kia Sorento 2010 / Chevrolet Cruze 2010: since 2026-11-25 both are marked near-empty (fewer than 10 complaints) and no longer named "fewest".
 
 ## Done outside the backlog
+- 2026-11-27: nightly batch of three: Chevrolet Traverse, Toyota 4Runner (new models) and Ford Edge 2011 via extra_pages (Edge re-fetched 11/11, 2011: 1,803 complaints, 3 recalls; electrical system most named). 33 model-years fetched 2026-11-27 (Traverse, 4Runner, Edge). Next: Chrysler Town & Country (needs per-year nhtsa_model override in the fetch script).
 - 2026-11-26: nightly batch of three new models: Dodge Charger, Ford Edge, Jeep Wrangler (Wrangler taken ahead of Traverse as a missing top seller). 33/33 model-years fetched 2026-11-26. Next: Chevrolet Traverse, Toyota 4Runner, Chrysler Town & Country (needs per-year nhtsa_model override), Ford Edge 2011 via extra_pages.
 - 2026-11-25: nightly batch of three new models: Honda Ridgeline, Toyota Sienna, Chrysler 200. Added a near-empty rule in `src/lib/data.js`: a year with fewer than 10 complaints that is not already a no-records or gap year is marked `sparse`, shown as "fewer than 10 complaints, too few to compare", and left out of the most/fewest order (model, model-year, topic, llms-full and about templates updated). This takes Cruze 2010 (2), Sorento 2010 (3), Ridgeline 2015 (2) and Chrysler 200 2018 (1) out of the "fewest" answers.
 - 2026-11-24: nightly batch of three: Honda Pilot, Honda Odyssey (new models) and the Ford Explorer structure component topic. Explorer re-fetched 11/11 years. Sitemap compared with live: nothing dropped, so no new pins (146 live URLs -> 151).

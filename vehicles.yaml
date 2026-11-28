@@ -71,6 +71,7 @@ extra_pages:
   - ford/fusion/2012
   - ford/escape/2017
   - ford/fusion/2011
+  - ford/edge/2011
 component_topics:
   - { make: Ford, model: Focus, component: POWER TRAIN, slug: power-train }
   - { make: Ford, model: Fusion, component: STEERING, slug: steering }
@@ -117,3 +118,5 @@ models:
   - { make: Honda, model: Ridgeline, nhtsa_make: HONDA, nhtsa_model: RIDGELINE }
   - { make: Toyota, model: Sienna, nhtsa_make: TOYOTA, nhtsa_model: SIENNA }
   - { make: Chrysler, model: "200", nhtsa_make: CHRYSLER, nhtsa_model: "200" }
+  - { make: Chevrolet, model: Traverse, nhtsa_make: CHEVROLET, nhtsa_model: TRAVERSE }
+  - { make: Toyota, model: 4Runner, nhtsa_make: TOYOTA, nhtsa_model: 4RUNNER }
